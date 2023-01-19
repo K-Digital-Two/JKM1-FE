@@ -1,67 +1,45 @@
-import './App.css';
+
 import {React, useEffect, useState} from 'react'
 import Navbar from './component/Navbar';
 import { Route, Routes } from 'react-router-dom';
 import Detail from './component/Detail';
 import Content from './component/Content';
 import axios from 'axios'
+import Login from './login/Login';
 
 
 function App() {
 
   
   const [ship , setShip]  = useState([{
-    shipCode :"",
-    shipId : "",
+    shipId :"",
     shipName : "",
-    shipUse :""
-  }])
-  const [info, setInfo] = useState([{
-    schedule_ship_shipId :"",
-    insertTime : "",
     shipLat : "",
-    shipLon : "",
-    speed : "",
-    arrivalTime : "",
-    takeTime : "",
-    accuracy : ""
+    shipLon :"",
+    takeTime :""
   }])
-
-  useEffect(()=>{
-    Promise.all([
-      axios.get('http://localhost:8080/ship/44012345').then(result=>{
-      ship[0] = result.data
-      setShip(ship)
-      console.log(ship)
-    })
-    .catch((error)=>{
-      console.log(error)
-    })],
-    axios.get('http://localhost:8080/info/44012345').then(result=>{
-      setInfo(result.data) 
-      console.log(info)
-    })
-    .catch((error)=>{
-      console.log(error)
-    }))
-  },[])
-
-
-
+ 
   
+  /* 4시간 삽질해서 얻은 useEffect 먼저 동기화 입니다 */
+  useEffect(()=>{
+    (async()=>{
+      const ship = await axios.get('http://localhost:8080/summary');
+      setShip(ship.data)
+    }) ()
+   },[])
+
+
   return (
-    <>
+    <div className="">
+    {/* <Login/> */}
     <Navbar/>
     <div className='flex'>
-      <Content ship={ship} info={info}/>
-      
+      <Content ship={ship}/>
       </div>
     <Routes>
-      <Route path='/detail' element={<Detail/>}/>
+      <Route path='/detail' element={<Detail ship={ship}/>}/>
     </Routes>
-    
-
-    </>
+    </div>
   );
 }
 
