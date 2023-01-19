@@ -5,14 +5,15 @@ import { TiMediaPlay, TiMediaPlayReverse } from "react-icons/ti";
 import {RiBarChartGroupedLine} from 'react-icons/ri'
 
 
-const Detail = () => {
+const Detail = ({ship}) => {
 
   const topics = [
-    { icons: <SiCodeship />, title: "선박명" },
+    { icons: <SiCodeship />, title: "MMSI / 선박명" },
+    { icons: <BsInfoCircle />, title: "현위치" },
     { icons: <BsInfoCircle />, title: "선박용도" },
     { icons: <BsSpeedometer />, title: "선박속도" },
     { icons: <TiMediaPlay />, title: "출발시간" },
-    { icons: <TiMediaPlayReverse />, title: "도착예정시간" },
+    { icons: <TiMediaPlayReverse />, title: "출발시각 / 도착예정시간" },
     { icons: <RiBarChartGroupedLine/>, title : "정확성"}
   ];
 

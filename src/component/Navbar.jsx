@@ -11,7 +11,8 @@ const navigate = useNavigate()
         <form className='flex items-center'>
           {/* 로고 버튼 누르면 홈으로 */}
           <img src={simg} alt="로고" className="w-[50px] ml-1" onClick={()=>{navigate('/')}}/> 
-          <img src={Logo} alt="제목" className='hidden xl:flex sm:flex w-[150px] h-[35px] ml-3'/> 
+          <img src={Logo} alt="제목" className='hidden xl:flex sm:flex w-[150px] h-[35px] ml-3'
+          onClick={()=>{navigate('/Login')}}/> 
           <label className='hidden lg:flex font-medium'>
             <input type='text' 
             placeholder="Search" 
