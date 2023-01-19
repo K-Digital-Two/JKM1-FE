@@ -16,14 +16,22 @@ function App() {
     shipName : "",
     shipLat : "",
     shipLon :"",
-    takeTime :""
+    takeTime :"",
+    shipUse :"",
+    speed : "",
+    departTime :"",
+    arrivalTime :"",
+    accuracy : "",
+    departure :"",
+    arrivalName:""
+
   }])
  
   
   /* 4시간 삽질해서 얻은 useEffect 먼저 동기화 입니다 */
   useEffect(()=>{
     (async()=>{
-      const ship = await axios.get('http://localhost:8080/summary');
+      const ship = await axios.get('http://localhost:8080/info');
       setShip(ship.data)
     }) ()
    },[])
@@ -37,7 +45,7 @@ function App() {
       <Content ship={ship}/>
       </div>
     <Routes>
-      <Route path='/detail' element={<Detail ship={ship}/>}/>
+      <Route path='/detail/:shipId' element={<Detail ship={ship}/>}/>
     </Routes>
     </div>
   );

@@ -1,23 +1,29 @@
 import { React, useState } from "react";
-import {AiOutlineLeft} from 'react-icons/ai'
+import {AiOutlineLeft, AiOutlineRight} from 'react-icons/ai'
 import ShipList from "./ShipList";
 
 const Listbar = ({ship}) => {
 
 const [open, setOpen] = useState()
-
+const [small, setSmall] = useState()
   return (
-    <div className="flex z-10 h-screen">
-      <div className={`${open? "w-72" : "w-24"} list h-560px bg-[#1E293B] relative`}>
+   
+    <div className="flex z-10">
+      <div className={`${open? "w-72" : "w-6"} list h-560px bg-[#1E293B] relative`}>
         {/* 선박 List */}
-        <ShipList ship={ship}/>
+        { open ? <ShipList ship={ship}/> : null}
         </div>
-        <AiOutlineLeft 
+        {/* Listbar 줄이기 넓히기 */}
+       { open ? <AiOutlineLeft
+       className={`text-white relative z-5 -ml-7  mt-1 w-7 h-6`} 
+       onClick={()=>{setOpen(!open)}}/>
+        :
+        <AiOutlineRight
         className={`text-white relative z-5 -ml-7  mt-1 w-7 h-6`} 
-        onClick={()=>{setOpen(!open)}}/>
-        
-       
+        onClick={()=>{setOpen(!open)}}/>}
     </div>
+  
+    
   );
 };
 

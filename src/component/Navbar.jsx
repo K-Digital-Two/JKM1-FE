@@ -13,10 +13,10 @@ const navigate = useNavigate()
           <img src={simg} alt="로고" className="w-[50px] ml-1" onClick={()=>{navigate('/')}}/> 
           <img src={Logo} alt="제목" className='hidden xl:flex sm:flex w-[150px] h-[35px] ml-3'
           onClick={()=>{navigate('/Login')}}/> 
-          <label className='hidden lg:flex font-medium'>
+          <label className='flex font-medium'>
             <input type='text' 
             placeholder="Search" 
-            className=' rounded-full border border-3 z-10 w-[30rem] h-[2rem] ml-96 bg-gray-200 font-bold'/>
+            className=' rounded-full border border-3 z-10 lg:w-[30rem] lg:h-[2rem] sm:w-[15rem] ml-96 bg-gray-200 font-bold'/>
             <button onClick={()=>{navigate('/Listbar')}} className='z-20 -m-5'>
             <BiSearch className='text-[20px]'/>
             </button>

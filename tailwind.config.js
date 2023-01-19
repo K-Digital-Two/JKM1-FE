@@ -6,6 +6,7 @@ module.exports = {
       backgroundImage :{
         'blue-screen' : "url('./img/back.png')"
       }
+      ,
     },
   },
   plugins: [],
