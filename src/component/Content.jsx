@@ -1,5 +1,5 @@
 import {React} from 'react'
-import Map from './Map'
+import Map2 from './Map2'
 
 
 
@@ -8,7 +8,7 @@ const Content = ({ship}) => {
 
 
   return (
-    <Map ship={ship} />
+    <Map2 ship={ship} />
      
   )
 }

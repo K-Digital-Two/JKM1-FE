@@ -1,8 +1,8 @@
 
 import {React, useEffect, useState} from 'react'
 import Navbar from './component/Navbar';
-import { Route, Routes } from 'react-router-dom';
-import Detail from './component/Detail';
+import { Route, Routes ,useParams} from 'react-router-dom';
+import Detail2 from './component/Detail2';
 import Content from './component/Content';
 import axios from 'axios'
 import Login from './login/Login';
@@ -10,6 +10,7 @@ import Login from './login/Login';
 
 function App() {
 
+  const {shipId} = useParams()
   
   const [ship , setShip]  = useState([{
     shipId :"",
@@ -36,6 +37,9 @@ function App() {
     }) ()
    },[])
 
+   
+
+   
 
   return (
     <div className="">
@@ -45,7 +49,7 @@ function App() {
       <Content ship={ship}/>
       </div>
     <Routes>
-      <Route path='/detail/:shipId' element={<Detail ship={ship}/>}/>
+      <Route path='/detail/:shipId' element={<Detail2 ship={ship} shipId={shipId}/>}/>
     </Routes>
     </div>
   );

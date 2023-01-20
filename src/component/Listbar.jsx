@@ -5,10 +5,9 @@ import ShipList from "./ShipList";
 const Listbar = ({ship}) => {
 
 const [open, setOpen] = useState()
-const [small, setSmall] = useState()
   return (
    
-    <div className="flex z-10">
+    <div className="flex z-20 h-screen">
       <div className={`${open? "w-72" : "w-6"} list h-560px bg-[#1E293B] relative`}>
         {/* 선박 List */}
         { open ? <ShipList ship={ship}/> : null}

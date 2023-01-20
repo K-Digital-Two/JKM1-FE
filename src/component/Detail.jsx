@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useState} from "react";
 import { SiCodeship } from "react-icons/si";
 import { BsInfoCircle, BsSpeedometer } from "react-icons/bs";
 import { TiMediaPlay, TiMediaPlayReverse } from "react-icons/ti";
@@ -9,11 +9,10 @@ import { useParams } from "react-router-dom";
 const Detail = ({ship}) => {
   
   const {shipId} = useParams()
-  console.log(ship)
 
-  ship.map(({shipId})=>{
-    
-  })
+  const [currentId , setCurrentId] = useState('')
+
+  
 
 
   const topics = [
@@ -33,18 +32,18 @@ const Detail = ({ship}) => {
     <div className="">
       <div className="font-bold text-blue-900 text-3xl">선박 상세정보</div>
       <div className="mt-2">
-         {topics.map(({icons,title,answer})=>{
+          {topics.map(({icons,title,answer})=>{
           return (
             <ul className="flex items-center text-2xl" key={title}>
               <li className="flex items-center m-2">
                 <p className="text-blue-800 mr-3">{icons}</p>
-                <p className="">{title} : </p>
+                <p className=""> {title} :</p>
                 <p> {answer}</p> 
               </li>
             </ul>
           )
          })}
-       
+         
       </div>
     </div>
   );
