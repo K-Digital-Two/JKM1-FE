@@ -8,9 +8,13 @@ import {
   MarkerF,
 } from "@react-google-maps/api";
 import {useNavigate, useParams } from "react-router-dom";
-import Listbar from "./Listbar";
 
-const Map2 = ({ship}) => {
+import Navbar from '../component/Navbar';
+import Detail from "./Detail";
+
+
+
+const Map = ({ship}) => {
  
 
    // 지도 스타일
@@ -33,12 +37,11 @@ const Map2 = ({ship}) => {
 
 
   // useParmas
-
-
+  const [showDetail, setShowDetail] = useState()
+ 
+  const [detailInfo, setDetailInfo] = useState()
 
   const [activeMarker, setActiveMarker] = useState(null);
-  // Detail 이동하는 navigate
-  const navigate = useNavigate();
 
   const handleActiveMarker = (marker) => {
     if (marker === activeMarker) {
@@ -47,28 +50,33 @@ const Map2 = ({ship}) => {
     setActiveMarker(marker);
   };
 
- 
+
+
+
+
 
   return (
-    <div className="flex">
-      <Listbar ship={ship}/>
+    <div className="">
+    
       {/* 구글 맵 api 받아오기 */}
-      <div className="hidden sm:flex w-[70vw]  lg:w-[80vw] xl:w-[90vw] lg:h-[100vh] 2xl:w-[100vw]">
+      <Navbar ship={ship}/>
+      
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
+        <div className="z-0 ">
         <GoogleMap
           mapContainerStyle={containerStyle} // 구글맵 사이즈
           center={center[0]} // 로드시 위치
           zoom={9} // 지도 확대 zoom 크기 
           options={options}
+          
         >
           <MarkerF
           position={center[0]}
           icon={{
             url : require("../img/shipMarker.png"),
             scaledSize : {width : 40, height : 40},
-            
           }}
-          onMouseOver={()=> handleActiveMarker()}
+         
           >
             {activeMarker === GoogleMap ? (
               <InfoWindow onCloseClick={()=>setActiveMarker(null)}>
@@ -80,7 +88,17 @@ const Map2 = ({ship}) => {
 
           </MarkerF>
           {/* 마커 정보 mapping */}
-          {ship.map(({shipId, shipLat, shipLon, shipName, takeTime})=>(
+          {ship.map(({shipId, shipName,
+                          shipLat ,
+                          shipLon ,
+                          takeTime,
+                          shipUse,
+                          speed,
+                          departTime,
+                          arrivalTime,
+                          accuracy,
+                          departure,
+                          arrivalName})=>(
             <MarkerF
             key={takeTime}
             position={{lat : parseFloat(shipLat) , lng : parseFloat(shipLon)}}
@@ -88,20 +106,38 @@ const Map2 = ({ship}) => {
               url :require("../img/ship.png"),
               scaledSize : {width : 25, height:25}
             }}
-            onMouseOver={() => handleActiveMarker(shipId)} 
+            onClick={() => {handleActiveMarker(shipId)
+              setShowDetail(!showDetail)}} 
             >
               {/* 마커랑 아이디값이 동일하면 infowindow UI 보여줌 */}
-              {activeMarker === shipId? (
+              
+              {activeMarker === shipId ? (
                 <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                   <div className="font-bold p-1">
-                    <p>선박명 :{shipName}</p>
+                    <p>선박명 :{shipName}</p> 
                     <p>위도 : {shipLat}</p>
                     <p>경도 : {shipLon}</p>
                     <p>도착예정시간 : {takeTime}분</p>
                     <span className="flex justify-center">
                       <button
                         className=" bg-blue-500 rounded-full text-white flex p-1 mt-2"
-                        onClick={() => navigate(`/detail/${shipId}`)}
+                        onClick={() =>{ 
+                          setShowDetail(!showDetail)
+                          //setDetailInfo([...detailInfo, {
+                          setDetailInfo([{  
+                          shipId,
+                          shipName,
+                          shipLat ,
+                          shipLon ,
+                          takeTime,
+                          shipUse,
+                          speed,
+                          departTime,
+                          arrivalTime,
+                          accuracy,
+                          departure,
+                          arrivalName}])
+                        }}
                       >
                         상세보기
                       </button>
@@ -112,10 +148,22 @@ const Map2 = ({ship}) => {
             </MarkerF>
         ))}
         </GoogleMap>
+        </div>
       </LoadScript>
+
+      <div className="absoulte">
+      {!showDetail ? <Detail detailInfo={detailInfo}/> : null}
       </div>
     </div>
+   
   );
 };
 
-export default Map2;
+export default Map;
+
+
+
+
+
+
+

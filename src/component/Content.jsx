@@ -1,5 +1,7 @@
 import {React} from 'react'
-import Map2 from './Map2'
+import Map from './Map'
+import Listbar from "./Listbar";
+
 
 
 
@@ -8,9 +10,10 @@ const Content = ({ship}) => {
 
 
   return (
-    <Map2 ship={ship} />
-     
-  )
+    <>
+    <Listbar ship={ship}/>
+    <Map ship={ship} />
+    </>)
 }
 
 export default Content

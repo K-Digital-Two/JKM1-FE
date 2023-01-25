@@ -1,34 +1,26 @@
-import {React,useState} from "react";
+import {React,useState,useEffect} from "react";
 import { SiCodeship } from "react-icons/si";
 import { BsInfoCircle, BsSpeedometer } from "react-icons/bs";
 import { TiMediaPlay, TiMediaPlayReverse } from "react-icons/ti";
 import {RiBarChartGroupedLine} from 'react-icons/ri'
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 
-const Detail = ({ship}) => {
+const Detail = ({detailInfo}) => {
   
- 
-  // console.log(shipId)
-  const {shipId} = useParams()
-  const [shipIndex, setShipIndex] = useState()
-
-
-
- 
-
-
+  
   const topics = [
-    { icons: <SiCodeship />, title: "MMSI / 선박명" , },
-    { icons: <BsInfoCircle />, title: "현위치" },
-    { icons: <BsInfoCircle />, title: "선박용도"},
-    { icons: <BsSpeedometer />, title: "선박속도"},
-    { icons: <TiMediaPlay />, title: "출발시간" },
-    { icons: <TiMediaPlayReverse />, title: "도착예정시간"},
-    { icons: <RiBarChartGroupedLine/>, title : "정확성"}
+    { icons: <SiCodeship />, title: "MMSI / 선박명", answer : (detailInfo[0].shipId, detailInfo[0].shipName)},
+    { icons: <BsInfoCircle />, title: "현위치" , answer :(`(위도)${detailInfo[0].shipLat} / (경도)${detailInfo[0].shipLon}`)},
+    { icons: <BsInfoCircle />, title: "선박용도", answer : detailInfo[0].shipUse},
+    { icons: <BsSpeedometer />, title: "선박속도", answer : detailInfo[0].speed + 'm/s'},
+    { icons: <TiMediaPlay />, title: "출발시간" , answer : detailInfo[0].departTime},
+    { icons: <TiMediaPlayReverse />, title: "도착예정시간", answer : detailInfo[0].arrivalTime},
+    { icons: <RiBarChartGroupedLine/>, title : "정확성", answer : detailInfo[0].accuracy}
   ];
 
-
+  console.log(detailInfo)
 
 
   return (
@@ -40,14 +32,12 @@ const Detail = ({ship}) => {
             <ul className="flex items-center text-2xl" key={title}>
               <li className="flex items-center m-2">
                 <p className="text-blue-800 mr-3">{icons}</p>
-                <p className="">{title} : </p>
-                <p> {answer}</p> 
-              
+                <p className=""> {title} : {answer} </p>
               </li>
             </ul>
           )
          })}
-         
+      
          
    
         
