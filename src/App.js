@@ -49,7 +49,7 @@ function App() {
       <Content ship={ship}/>
       </div>
     <Routes>
-      <Route path='/detail/:shipId' element={<Detail2 ship={ship} shipId={shipId}/>}/>
+      <Route path='/detail/:shipId' element={<Detail ship={ship}/>}/>
     </Routes>
     </div>
   );

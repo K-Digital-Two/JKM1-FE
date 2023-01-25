@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import {React, useState} from "react";
+=======
+import {React,useState} from "react";
+>>>>>>> 7dd65762afcdd40922e25e7425a817777701c7b0
 import { SiCodeship } from "react-icons/si";
 import { BsInfoCircle, BsSpeedometer } from "react-icons/bs";
 import { TiMediaPlay, TiMediaPlayReverse } from "react-icons/ti";
@@ -14,9 +18,14 @@ const Detail = ({ship}) => {
   const [shipIndex, setShipIndex] = useState()
 
 
+<<<<<<< HEAD
   const [currentId , setCurrentId] = useState('')
 
   
+=======
+
+ 
+>>>>>>> 7dd65762afcdd40922e25e7425a817777701c7b0
 
 
   const topics = [
@@ -36,19 +45,23 @@ const Detail = ({ship}) => {
     <div className="">
       <div className="font-bold text-blue-900 text-3xl">선박 상세정보</div>
       <div className="mt-2">
-          {topics.map(({icons,title,answer})=>{
+         {topics.map(({icons,title,answer})=>{
           return (
             <ul className="flex items-center text-2xl" key={title}>
               <li className="flex items-center m-2">
                 <p className="text-blue-800 mr-3">{icons}</p>
-                <p className=""> {title} :</p>
+                <p className="">{title} : </p>
                 <p> {answer}</p> 
               
               </li>
             </ul>
           )
          })}
+<<<<<<< HEAD
            
+=======
+         
+>>>>>>> 7dd65762afcdd40922e25e7425a817777701c7b0
          
    
         

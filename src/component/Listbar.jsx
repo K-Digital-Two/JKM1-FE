@@ -5,6 +5,7 @@ import ShipList from "./ShipList";
 const Listbar = ({ship}) => {
 
 const [open, setOpen] = useState()
+const [small, setSmall] = useState()
   return (
     
   
