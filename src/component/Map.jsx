@@ -53,7 +53,7 @@ const Map2 = ({ship}) => {
     <div className="flex">
       <Listbar ship={ship}/>
       {/* 구글 맵 api 받아오기 */}
-      <div className="hidden sm:flex w-[70vw]  lg:w-[80vw] xl:w-[90vw] lg:h-[100vh] 2xl:w-[100vw]">
+      <div className="">
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
         <GoogleMap
           mapContainerStyle={containerStyle} // 구글맵 사이즈
@@ -88,7 +88,7 @@ const Map2 = ({ship}) => {
               url :require("../img/ship.png"),
               scaledSize : {width : 25, height:25}
             }}
-            onMouseOver={() => handleActiveMarker(shipId)} 
+            onClick={() => handleActiveMarker(shipId)} 
             >
               {/* 마커랑 아이디값이 동일하면 infowindow UI 보여줌 */}
               {activeMarker === shipId? (
