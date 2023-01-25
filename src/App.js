@@ -1,16 +1,16 @@
 
 import {React, useEffect, useState} from 'react'
 import Navbar from './component/Navbar';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useParams } from 'react-router-dom';
 import Detail from './component/Detail';
 import Content from './component/Content';
 import axios from 'axios'
-import Login from './login/Login';
+
 
 
 function App() {
 
-  
+ 
   const [ship , setShip]  = useState([{
     shipId :"",
     shipName : "",
@@ -37,10 +37,14 @@ function App() {
    },[])
 
 
+
+
+
   return (
     <div className="">
     {/* <Login/> */}
-    <Navbar/>
+    {/* <Login/> */}
+    <Navbar ship={ship}/>
     <div className='flex'>
       <Content ship={ship}/>
       </div>

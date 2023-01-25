@@ -13,22 +13,27 @@ const Detail = ({ship}) => {
   const {shipId} = useParams()
   const [shipIndex, setShipIndex] = useState()
 
-
-
- 
+  
+  console.log(ship)
+  console.log(shipId)
 
 
   const topics = [
-    { icons: <SiCodeship />, title: "MMSI / 선박명" , },
-    { icons: <BsInfoCircle />, title: "현위치" },
-    { icons: <BsInfoCircle />, title: "선박용도"},
-    { icons: <BsSpeedometer />, title: "선박속도"},
-    { icons: <TiMediaPlay />, title: "출발시간" },
-    { icons: <TiMediaPlayReverse />, title: "도착예정시간"},
-    { icons: <RiBarChartGroupedLine/>, title : "정확성"}
+    { icons: <SiCodeship />, title: "MMSI / 선박명" , answer : (`${ship[0].shipId} / ${ship[0].shipName}`)},
+    { icons: <BsInfoCircle />, title: "현위치" ,answer : (`(위도)${ship[0].shipLat} / (경도)${ship[0].shipLon}`)},
+    { icons: <BsInfoCircle />, title: "선박용도", answer : `${ship[0].shipUse}` },
+    { icons: <BsSpeedometer />, title: "선박속도" ,answer : `${ship[0].speed}`},
+    { icons: <TiMediaPlay />, title: "출발시간" ,answer : (`${ship[0].departTime}`).slice(`${ship[0].departTime}`,-10)},
+    { icons: <TiMediaPlayReverse />, title: "도착예정시간",answer : (`${ship[0].arrivalTime}`).slice(`${ship[0].arrivalTime}`, -10) },
+    { icons: <RiBarChartGroupedLine/>, title : "정확성", answer : `${ship[0].accuracy}`}
   ];
 
+  const answers = [
+    {answer : (`${ship[shipIndex]}`)}
+  ]
 
+
+  
 
 
   return (
@@ -42,15 +47,10 @@ const Detail = ({ship}) => {
                 <p className="text-blue-800 mr-3">{icons}</p>
                 <p className="">{title} : </p>
                 <p> {answer}</p> 
-              
               </li>
             </ul>
           )
          })}
-         
-         
-   
-        
        
       </div>
     </div>
