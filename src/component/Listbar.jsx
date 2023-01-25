@@ -7,9 +7,7 @@ const Listbar = ({ship}) => {
 const [open, setOpen] = useState()
   return (
     
-    <div className="flex z-20 h-screen">
-      <div className={`${open? "w-72" : "w-6"} list h-560px bg-[#1E293B] opacity-80 relative`}>
-   
+  
     <div className="flex z-20 h-screen">
       <div className={`${open? "w-72" : "w-6"} list h-560px bg-[#1E293B] relative`}>
         {/* 선박 List */}

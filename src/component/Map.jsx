@@ -86,7 +86,7 @@ const Map2 = ({ship}) => {
               scaledSize : {width : 25, height:25}
             }}
             onClick={() => handleActiveMarker(shipId)} 
-            onClick={() => handleActiveMarker(shipId)} 
+          
             >
               {/* 마커랑 아이디값이 동일하면 infowindow UI 보여줌 */}
               {activeMarker === shipId? (
