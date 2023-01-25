@@ -1,17 +1,16 @@
 
 import {React, useEffect, useState} from 'react'
 import Navbar from './component/Navbar';
-import { Route, Routes ,useParams} from 'react-router-dom';
-import Detail2 from './component/Detail2';
+import { Route, Routes, useParams } from 'react-router-dom';
+import Detail from './component/Detail';
 import Content from './component/Content';
 import axios from 'axios'
-import Login from './login/Login';
+
 
 
 function App() {
 
-  const {shipId} = useParams()
-  
+ 
   const [ship , setShip]  = useState([{
     shipId :"",
     shipName : "",
@@ -37,19 +36,20 @@ function App() {
     }) ()
    },[])
 
-   
 
-   
+
+
 
   return (
     <div className="">
     {/* <Login/> */}
-    <Navbar/>
+    {/* <Login/> */}
+    <Navbar ship={ship}/>
     <div className='flex'>
       <Content ship={ship}/>
       </div>
     <Routes>
-      <Route path='/detail/:shipId' element={<Detail2 ship={ship} shipId={shipId}/>}/>
+      <Route path='/detail/:shipId' element={<Detail ship={ship}/>}/>
     </Routes>
     </div>
   );
