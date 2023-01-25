@@ -1,3 +1,4 @@
+
 import React from 'react'
 import {BiSearch} from 'react-icons/bi'
 import simg from '../img/ship.png'
@@ -28,8 +29,8 @@ const navigate = useNavigate()
           <label className='flex font-medium'>
             {/* <input type='text' 
             placeholder="Search" 
-            className=' rounded-full border border-3 z-10 lg:w-[30rem] lg:h-[2rem] sm:w-[15rem] ml-96 bg-gray-200 font-bold'/>
-            <button onClick={()=>{navigate('/Listbar')}} className='z-20 -m-5'>
+            className='rounded-full z-10 lg:w-[30rem] lg:h-[2rem] sm:w-[15rem] pl-5 bg-gray-200 font-bold'/>
+            <button onClick={()=>{navigate('/Listbar')}} className='z-20 -m-10'>
             <BiSearch className='text-[20px]'/>
             </button> */}
             <Combobox
@@ -53,3 +54,6 @@ const navigate = useNavigate()
 }
 
 export default Navbar
+
+
+
