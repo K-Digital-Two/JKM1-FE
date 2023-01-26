@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import MapStyles from "../MapStyles";
 
 import {
@@ -7,7 +7,7 @@ import {
   LoadScript,
   MarkerF,
 } from "@react-google-maps/api";
-import {useNavigate, useParams } from "react-router-dom";
+
 
 import Navbar from '../component/Navbar';
 import Detail from "./Detail";

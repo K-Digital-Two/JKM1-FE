@@ -1,10 +1,9 @@
-import {React,useState,useEffect} from "react";
+import {React} from "react";
 import { SiCodeship } from "react-icons/si";
 import { BsInfoCircle, BsSpeedometer } from "react-icons/bs";
 import { TiMediaPlay, TiMediaPlayReverse } from "react-icons/ti";
 import {RiBarChartGroupedLine} from 'react-icons/ri'
-import { useParams } from "react-router-dom";
-import axios from "axios";
+
 
 
 const Detail = ({detailInfo}) => {

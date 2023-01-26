@@ -5,7 +5,7 @@ import ShipList from "./ShipList";
 const Listbar = ({ship}) => {
 
 const [open, setOpen] = useState()
-const [small, setSmall] = useState()
+
   return (
     
     <div className="flex z-20 h-screen">
