@@ -2,9 +2,11 @@
 import {React, useEffect, useState} from 'react'
 import Navbar from './component/Navbar';
 import { Route, Routes, useParams } from 'react-router-dom';
-import Detail from './component/Detail';
+
 import Content from './component/Content';
 import axios from 'axios'
+import Info from './pages/Info';
+
 
 
 
@@ -42,17 +44,22 @@ function App() {
 
   return (
     <div className="position: 'relative'">
-    {/* <Login/> */}
+      <Navbar ship={ship}/>
+     
+      
     {/* <Login/> */}
     {/* <div className=' h-20 absoulte z-10 bg-slate-600'>
     <Navbar ship={ship}/>
     </div> */}
+   <Routes>
+    <Route path='/Info' element={ <Info ship={ship}/>}/>
+    <Route path='/ship' element={ 
     <div className='flex'>
       <Content ship={ship}/>
-    </div>
-    <Routes>
-      <Route path='/detail/:shipId' element={<Detail ship={ship}/>}/>
-    </Routes>
+    </div>}/>
+    {/*  */}
+   </Routes>
+   
     </div>
   );
 }

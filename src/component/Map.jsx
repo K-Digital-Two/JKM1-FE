@@ -11,7 +11,8 @@ import {
 import Listbar from '../component/Listbar'
 import Navbar from '../component/Navbar';
 import Detail from "./Detail";
-import { cleanup } from "@testing-library/react";
+import ShipList from "./ShipList";
+
 
 
 
@@ -59,6 +60,11 @@ const Map = ({ship}) => {
 
   const [countDetail, setCountDetail] = useState(0)
 
+  const [shipClick, setShipClick] = useState()
+
+  const getShipClick = (text)=>{
+      setShipClick(text)
+  }
   const handleActiveMarker = (marker) => {
     if (marker === activeMarker) {
       return;
@@ -68,8 +74,10 @@ const Map = ({ship}) => {
   
   // useEffect로 Detail버그 해결
   useEffect(()=>{
-    cleanup(setShowDetail(showDetail))
-
+   
+   return function cleanup(){
+    setShowDetail(!showDetail)
+   }
   },[activeMarker])
   
 
@@ -79,8 +87,8 @@ const Map = ({ship}) => {
     <>
       {/* 구글 맵 api 받아오기 */}
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
-      <Navbar className='p-3 w-[100%] h-20 absoulte z-20 bg-slate-600' ship={ship}/>
-      <Listbar className='flex z-10 h-screen' ship={ship}/>
+      {/* <Navbar className='p-3 w-[100%] h-20 absoulte z-20 bg-slate-600' ship={ship}/> */}
+      <Listbar className='flex z-10 h-screen' ship={ship} getShipClick={getShipClick}/>
       
         <div className="z-0 absolute">
         <GoogleMap
@@ -184,4 +192,3 @@ const Map = ({ship}) => {
 };
 
 export default Map;
-

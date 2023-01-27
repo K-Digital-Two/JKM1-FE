@@ -9,16 +9,17 @@ import Input from "./Input";
 
 
 const Navbar = ({ ship }) => {
-  const ships = ship.map(({ shipName }) => {
-    return shipName;
-  });
+
+  // const ships = ship.map(({ shipName }) => {
+  //   return shipName;
+  // });
 
   
-  console.log(ship)
+ 
 
   const navigate = useNavigate();
   return (
-    <div className="p-3 w-[100%] h-20 absoulte z-10">
+    <div className="p-3 w-[100%] h-20 absoulte z-10 ">
       <form className="flex">
         {/* 로고 버튼 누르면 홈으로 */}
         <img
@@ -37,14 +38,16 @@ const Navbar = ({ ship }) => {
             navigate("/Login");
           }}
         />
-        <label className="font-medium items-center ml-auto mr-auto mt-3 ">
+        <label className="flex font-medium items-center ml-auto mr-auto mt-3 space-x-9">
           {/* <input type='text' input type
             placeholder="Search" 
             className='rounded-full z-10 lg:w-[30rem] lg:h-[2rem] sm:w-[15rem] pl-5 bg-gray-200 font-bold'/>
             <button onClick={()=>{navigate('/Listbar')}} className='z-20 -m-10'>
             <BiSearch className='text-[20px]'/>
             </button> */}
-          <Input ship={ship}/>
+            <p onClick={()=>{navigate('/info')}}>리스트보기</p>
+            <p onClick={()=>{navigate('/ship')}}>지도보기</p>
+      
         </label>
       </form>
     </div>

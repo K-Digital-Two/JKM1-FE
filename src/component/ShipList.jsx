@@ -1,6 +1,16 @@
-import React from 'react'
+import {React,useState,useEffect} from 'react'
 
 const ShipList = ({ship}) => {
+
+
+  const [shipClick, setShipClick] = useState()
+
+  useEffect(() => {
+    console.log(shipClick)
+  }, [shipClick]);
+
+  
+
 
   return (
     <div className='flex h-full justify-center bg-black bg-opacity-50'>
@@ -8,7 +18,12 @@ const ShipList = ({ship}) => {
         <h2 className='pt-3 pb-2 flex font-bold text-[30px] '>선박List</h2>
         {ship.map(({shipId,shipName})=>(
           <div className='p-2 text-center text-white hover:text-black hover:text-[20px]' key={shipId}>
-          <p className="hover:bg-white">{shipName}</p>
+          <p 
+          className="hover:bg-white"
+          onClick={()=>setShipClick(shipName)}
+          >
+            {shipName}
+            </p>
           </div>
         ))}
       </div>

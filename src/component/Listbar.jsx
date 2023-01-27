@@ -6,10 +6,11 @@ import ShipList from "./ShipList";
 const Listbar = ({ship}) => {
 
 const [open, setOpen] = useState()
-const [small, setSmall] = useState()
+
   return (
    
     <div className="p-5 flex pt-20 z-10 h-screen absolute ">
+     
       <div className={`${open? "w-60" : "w-6"} relative`}>
         {/* 선박 List */}
         { open ? <ShipList ship={ship}/> : null}
