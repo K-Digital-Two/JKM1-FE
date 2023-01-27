@@ -1,10 +1,10 @@
 
 import {React, useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom';
+import Navbar from './component/Navbar';
+import { Route, Routes, useParams } from 'react-router-dom';
 import Detail from './component/Detail';
 import Content from './component/Content';
 import axios from 'axios'
-import Login from './login/Login';
 
 
 
@@ -41,13 +41,18 @@ function App() {
 
 
   return (
-    <div className="">
+    <div className="position: 'relative'">
     {/* <Login/> */}
     {/* <Login/> */}
-   
-    <div className=''>
+    {/* <div className=' h-20 absoulte z-10 bg-slate-600'>
+    <Navbar ship={ship}/>
+    </div> */}
+    <div className='flex'>
       <Content ship={ship}/>
-      </div>
+    </div>
+    <Routes>
+      <Route path='/detail/:shipId' element={<Detail ship={ship}/>}/>
+    </Routes>
     </div>
   );
 }

@@ -13,8 +13,9 @@ const Login = () => {
         </div>
         <div className="w-full transform border-b-2 bg-transparent text-lg duration-300 focus-within:border-indigo-500">
           <input 
-          type="text" 
-          placeholder="비밀번호 입력해주세요" />
+          type="password" 
+          placeholder="비밀번호 입력해주세요"
+          className="w-full border-none bg-transparent outline-none placeholder:italic focus:outline-none" />
         </div>
         <button>
           로그인

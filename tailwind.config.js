@@ -1,7 +1,9 @@
 /** @type {import('tailwindcss').Config} */
+
+const ppath = require('path')
 module.exports = {
   content: ["./src/**/*.{html,js,jsx}",
-  require.resolve('react-widgets/styles.css')
+
 ],
   theme: {
     extend: {
@@ -11,5 +13,7 @@ module.exports = {
       ,
     },
   },
-  plugins: [],
+  plugins: [
+   
+  ],
 }
