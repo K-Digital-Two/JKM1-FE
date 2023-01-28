@@ -26,7 +26,7 @@ const Detail = ({detailInfo}) => {
     
      <>
       { !showDetail ? 
-        <div className="absoulte z-20 bg-white float-right relative">
+        <div className=" h-screen   bg-white float-right relative">
         <div className="text-center font-bold text-blue-900 text-xl">
           <IoCloseOutline 
           className="ml-96 text-[30px] pt-1"

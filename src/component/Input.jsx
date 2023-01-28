@@ -17,7 +17,7 @@ const Input = ({ ship }) => {
   const [correct, setCorrect] = useState("");
   
   // Filter 함수 이용해서 correct(e.target.value)값이 shipName을 포함하는 배열 생성
-  const changeShip = ship.filter((item) => item.arrivalTime.includes(correct))
+  const changeShip = ship.filter((item) => item.shipName.includes(correct))
 
   // correct state가 변경될때 마다
   useEffect(() => {
@@ -25,15 +25,15 @@ const Input = ({ ship }) => {
   }, [correct]);
 
   return (
-    <div className="bg-gray-400">
+    <div className="">
       <Combobox className="">
         <ComboboxInput type="text-white" onChange={(e) => {
           setCorrect(e.target.value)
         }} />
         <ComboboxPopover>
           <ComboboxList className="z-20">
-            {changeShip.map(({arrivalTime,shipId})=>{
-              const str = `${arrivalTime}`
+            {changeShip.map(({shipName,shipId})=>{
+              const str = `${shipName}`
               return <ComboboxOption 
               key={shipId}
               value={str}/>

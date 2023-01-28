@@ -16,7 +16,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
+@layer components {
+  .navbtn{
+    @apply hidden sm:flex lg:hidden w-7 h-7 hover:scale-110 duration-300 ease-out 
+  }
+}
 
 label {
   font-family: 'Pretendard-Regular';

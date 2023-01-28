@@ -7,17 +7,9 @@ import {
   LoadScript,
   MarkerF,
 } from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
 
-import Listbar from '../component/Listbar'
-import Navbar from '../component/Navbar';
-import Detail from "./Detail";
-import ShipList from "./ShipList";
-
-
-
-
-
-const Map = ({ship}) => {
+const TotalMap = ({ship}) => {
  
 
    // 지도 스타일
@@ -71,15 +63,8 @@ const Map = ({ship}) => {
     }
     setActiveMarker(marker);
   };
-  
-  // useEffect로 Detail버그 해결
-  useEffect(()=>{
-   
-   return function cleanup(){
-    setShowDetail(!showDetail)
-   }
-  },[activeMarker])
-  
+ 
+ const navigate = useNavigate()
 
 
 
@@ -88,8 +73,7 @@ const Map = ({ship}) => {
       {/* 구글 맵 api 받아오기 */}
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
       {/* <Navbar className='p-3 w-[100%] h-20 absoulte z-20 bg-slate-600' ship={ship}/> */}
-      <Listbar className='flex z-10 h-screen' ship={ship} getShipClick={getShipClick}/>
-      
+      {/* <Listbar className='flex z-10 h-screen' ship={ship} getShipClick={getShipClick}/> */}
         <div className="z-0 absolute">
         <GoogleMap
           mapContainerStyle={containerStyle} // 구글맵 사이즈
@@ -114,9 +98,6 @@ const Map = ({ship}) => {
             </InfoWindow>
           ):null}
           </MarkerF>
-
-
-
           {/* 마커 정보 mapping */}
           {ship.map(({shipId, shipName,
                           shipLat ,
@@ -153,6 +134,7 @@ const Map = ({ship}) => {
                     <button
                         className=" bg-blue-500 rounded-full text-white flex p-1 mt-2"
                         onClick={() =>{ 
+                          navigate(`/shipMap/${shipId}`)
                           setShowDetail(!showDetail)
                           //setDetailInfo([...detailInfo, {
                           setDetailInfo([{  
@@ -182,13 +164,9 @@ const Map = ({ship}) => {
         </GoogleMap>
         </div>
       </LoadScript>
-
-      <div className="absoulte z-20 bg-white float-right relative">
-      {!showDetail && countDetail !== 0 ? <Detail detailInfo={detailInfo}/> : null}
-      </div>
     </>
   
   );
 };
 
-export default Map;
+export default TotalMap;
