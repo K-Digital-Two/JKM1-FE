@@ -136,7 +136,6 @@ const TotalMap = ({ship}) => {
                         onClick={() =>{ 
                           navigate(`/shipMap/${shipId}`)
                           setShowDetail(!showDetail)
-                          //setDetailInfo([...detailInfo, {
                           setDetailInfo([{  
                           shipId,
                           shipName,

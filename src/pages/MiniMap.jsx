@@ -4,21 +4,19 @@ import axios from "axios";
 import Detail from "../component/Detail";
 import {
   GoogleMap,
-  InfoWindow,
+  InfoWindowF,
   LoadScript,
   MarkerF,
   Polyline,
 } from "@react-google-maps/api";
-import { useParams } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
-const ShipMap = ({ ship, shipId}) => {
-  // useParams 이용해서 param 값가져오기
- 
-
+const MiniMap = ({shipId, setSlideMap }) => {
 
   const [path, setPath] = useState([]);
   const [changePath, setChangePath] = useState([]);
   const [startPath, setStartPath] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     (async () => {
@@ -27,9 +25,8 @@ const ShipMap = ({ ship, shipId}) => {
       );
       setPath(result.data);
     })();
-  }, [shipId]);
+  }, []);
 
-  
   for (let i in path) {
     changePath.push({ lat: path[i].shipLat, lng: path[i].shipLon }); // 변하는 위치
     startPath.push({ lat: path[0].shipLat, lng: path[0].shipLon }); // 초기 마커위치
@@ -37,8 +34,8 @@ const ShipMap = ({ ship, shipId}) => {
 
   // 지도 스타일
   const containerStyle = {
-    width: "40vw",
-    height: "100vh",
+    width: "20vw",
+    height: "25vh",
   };
   // 처음 중심지 위치
   const [position, setPosition] = useState({
@@ -64,13 +61,15 @@ const ShipMap = ({ ship, shipId}) => {
 
   return (
     <div className="flex">
-    
       {/* 구글 맵 api 받아오기 */}
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
-        <div className="">
+        <div className=""
+          // onClick={()=>{navigate(`/shipMap/${shipId}`)}}
+          onClick={()=>{setSlideMap(true)}}
+          >
           <GoogleMap
             mapContainerStyle={containerStyle} // 구글맵 사이즈
-            center={position} // 로드시 위치
+            center={startPath[0]} // 로드시 위치
             zoom={9} // 지도 확대 zoom 크기
             options={options}
           >
@@ -78,27 +77,21 @@ const ShipMap = ({ ship, shipId}) => {
               position={position}
               icon={{
                 url: require("../img/shipMarker.png"),
-                scaledSize: { width: 40, height: 40 },
+                scaledSize: { width: 30, height: 30 },
               }}
               onClick={() => handleActiveMarker("인천항")}
             >
-              {activeMarker === "인천항" ? (
-                <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                  <div className="font-bold p-1">
-                    <p>인천항</p>
-                  </div>
-                </InfoWindow>
-              ) : null}
             </MarkerF>
-
             <MarkerF
               position={startPath[0]}
               icon={{
                 url: require("../img/ship.png"),
                 scaledSize: { width: 25, height: 25 },
               }}
-            ></MarkerF>
-
+                onClick={() => {
+                setActiveMarker(shipId);
+              }}>
+              </MarkerF>
             <Polyline path={changePath} options={options} />
           </GoogleMap>
         </div>
@@ -107,4 +100,4 @@ const ShipMap = ({ ship, shipId}) => {
   );
 };
 
-export default ShipMap;
+export default MiniMap;

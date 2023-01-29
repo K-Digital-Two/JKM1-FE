@@ -1,10 +1,10 @@
 import { React, useEffect, useState } from "react";
 import Navbar from "./component/Navbar";
 import { Route, Routes} from "react-router-dom";
-import Content from "./component/Content";
 import axios from "axios";
 import Info from "./pages/Info";
 import ShipMap from "./pages/ShipMap";
+import TotalMap from "./pages/TotalMap";
 
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
     })();
   }, []);
 
-
+  
 
   
 
@@ -45,7 +45,7 @@ function App() {
       <Navbar ship={ship} />
       <Routes>
         <Route path="/Info" element={<Info ship={ship} />} />
-        <Route path="/TotalMap"element={<Content ship={ship}/>}/>
+        <Route path="/TotalMap"element={<TotalMap ship={ship}/>}/>
         <Route path="/shipMap/:shipId" element={<ShipMap ship={ship}/>}/>
       </Routes>
     </div>
