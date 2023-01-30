@@ -25,7 +25,9 @@ const MiniMap = ({shipId, setSlideMap }) => {
       );
       setPath(result.data);
     })();
-  }, []);
+  }, [])
+
+
 
   for (let i in path) {
     changePath.push({ lat: path[i].shipLat, lng: path[i].shipLon }); // 변하는 위치
@@ -64,8 +66,7 @@ const MiniMap = ({shipId, setSlideMap }) => {
       {/* 구글 맵 api 받아오기 */}
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
         <div className=""
-          // onClick={()=>{navigate(`/shipMap/${shipId}`)}}
-          onClick={()=>{setSlideMap(true)}}
+          onClick={()=>{navigate(`/shipMap/${shipId}`)}}
           >
           <GoogleMap
             mapContainerStyle={containerStyle} // 구글맵 사이즈

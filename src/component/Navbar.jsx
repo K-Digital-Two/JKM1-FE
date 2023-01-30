@@ -1,39 +1,75 @@
 import React from 'react'
 import Logo from '../img/ship.png'
-import Tlogo from '../img/logo.png'
 
-import {AiOutlineUnorderedList} from 'react-icons/ai'
-import {GrMapLocation} from 'react-icons/gr'
+import {TbList, TbMapPins, TbHome} from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
-const Navbar2 = ({ship}) => {
 
-  // Link 사용하는 React 훅
- const navigate = useNavigate() 
+
+const Navbar = ({ship}) => {
+
+
+  const navigate = useNavigate() 
+  const [homeClick, setHomeClick] = useState(0)
+  const [listClick ,setListClick] = useState(0)
+  const [mapClick, setMapClick] = useState(0)
+
+
 
   return (
-      <div className='flex items-center justify-between px-2'>
-        <img src={Logo} alt="로고"  className="w-[50px] h-[50px] ml-2" />
-        {/* <img src={Tlogo} alt="로고제목" className='hidden mt-2 xl:flex sm:flex w-[150px] h-[35px] ml-3'/> */}
-        <div className=''>
-          <ul className='flex items-center gap-9 lg:gap-10'>
-            <li onClick={()=>{navigate('/info')}}>
-              <AiOutlineUnorderedList className='navbtn'/>
-              <p className='hidden lg:flex text-[25px]'>리스트 보기</p>
+    <>
+      <div className='flex py-4 px-6 items-center absolute z-20 bg-white '>
+        <img src={Logo} 
+        alt="로고"
+        className="w-[50px] h-[50px] mx-2" />
+        <p className='font-bold text-[30px] italic'>ShipTraffic.live</p>
+      </div>
+      <div className='w-28 h-screen pt-[90px] absolute z-10 bg-[#06283D]'>
+          <ul className='ml-1.5 mt-1  text-[#DFF6FF]' >
+          <li className='group' onClick={()=>
+              {navigate('/')
+              setHomeClick(1)
+              setListClick(0)
+              setMapClick(0)
+              }}>
+              <button className={`text-sm h-24 w-24 group-hover:bg-[#06151e]
+              ${homeClick === 1 ? "border-l-2 border-[#47B5FF] bg-[#06151e] " :null}`}>
+                <TbHome className={`mx-auto h-12 w-12 stroke-[#DFF6FF] group-hover:stroke-[#256D85]
+                ${homeClick === 1? "stroke-[#47B5FF]" : null}`}/>
+                Home
+              </button>
             </li>
-            <li onClick={()=>{navigate('/TotalMap')}}>
-              <GrMapLocation className='navbtn'/>
-              <p className='hidden lg:flex text-[25px]'>지도 보기</p>
+            <li className='group' onClick={()=>
+              {navigate('/info')
+              setListClick(1)
+              setMapClick(0)
+              setHomeClick(0)
+              }}>
+              <button className={`text-sm h-24 w-24 group-hover:bg-[#06151e]
+              ${listClick === 1 && homeClick=== 0 ? "border-l-2 border-[#47B5FF] bg-[#06151e] " :null}`}>
+                <TbList className={`mx-auto h-12 w-12 stroke-[#DFF6FF] group-hover:stroke-[#256D85]
+                ${listClick === 1? "stroke-[#47B5FF]" : null}`}/>
+                List
+              </button>
+            </li>
+            <li className='group' onClick={()=>{
+              navigate('/TotalMap')
+              setMapClick(1)
+              setListClick(0)
+              setHomeClick(0)
+             }}>
+              <button className={`text-sm h-24 w-24 group-hover:bg-[#06151e]
+              ${mapClick === 1 ? " border-l-2 border-[#47B5FF] bg-[#06151e]" : null}`}>
+                <TbMapPins className={`mx-auto h-12 w-12 stroke-[#DFF6FF] group-hover:stroke-[#256D85]
+               ${mapClick === 1 ? "stroke-[#47B5FF]" : null}`}/>
+                Map
+              </button>
             </li>
           </ul>
         </div>
-        <div>
-          <div>
-        
-          </div>
-        </div>
-      </div>
+    </>
   )
 }
 
-export default Navbar2
+export default Navbar

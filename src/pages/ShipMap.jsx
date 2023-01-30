@@ -11,14 +11,17 @@ import {
 } from "@react-google-maps/api";
 import { useParams } from "react-router-dom";
 
-const ShipMap = ({ ship, shipId}) => {
-  // useParams 이용해서 param 값가져오기
- 
 
+const ShipMap = ({ship}) => {
+  // useParams 이용해서 param 값가져오기
+const {shipId} = useParams() 
 
   const [path, setPath] = useState([]);
   const [changePath, setChangePath] = useState([]);
   const [startPath, setStartPath] = useState([]);
+  const [currentPath, setCurrentPath] = useState([])
+ 
+
 
   useEffect(() => {
     (async () => {
@@ -26,18 +29,34 @@ const ShipMap = ({ ship, shipId}) => {
         `http://localhost:8080/locations/${shipId}`
       );
       setPath(result.data);
+      console.log(changePath)
+    
     })();
-  }, [shipId]);
+  }, []);
 
+// useEffect(()=>{
+//   const interval = setInterval(()=>{
+//     (async () => {
+//       const result = await axios.get(
+//         `http://localhost:8080/locations/${shipId}`
+//       );
+//       setPath(result.data);
+//       console.log(changePath)
+//     })()
+//   }, 5000)
+//   return () =>{
+//     clearInterval(interval)
+//   }
+// },[])
   
-  for (let i in path) {
-    changePath.push({ lat: path[i].shipLat, lng: path[i].shipLon }); // 변하는 위치
-    startPath.push({ lat: path[0].shipLat, lng: path[0].shipLon }); // 초기 마커위치
-  }
+for (let i in path) {
+  changePath.push({ lat: path[i].shipLat, lng: path[i].shipLon})
+}
+
 
   // 지도 스타일
   const containerStyle = {
-    width: "40vw",
+    width: "100vw",
     height: "100vh",
   };
   // 처음 중심지 위치
@@ -64,13 +83,12 @@ const ShipMap = ({ ship, shipId}) => {
 
   return (
     <div className="flex">
-    
       {/* 구글 맵 api 받아오기 */}
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
         <div className="">
           <GoogleMap
             mapContainerStyle={containerStyle} // 구글맵 사이즈
-            center={position} // 로드시 위치
+            center={startPath[0]} // 로드시 위치
             zoom={9} // 지도 확대 zoom 크기
             options={options}
           >
@@ -90,16 +108,16 @@ const ShipMap = ({ ship, shipId}) => {
                 </InfoWindow>
               ) : null}
             </MarkerF>
-
             <MarkerF
-              position={startPath[0]}
+              position={currentPath[0]}
               icon={{
                 url: require("../img/ship.png"),
                 scaledSize: { width: 25, height: 25 },
               }}
-            ></MarkerF>
-
-            <Polyline path={changePath} options={options} />
+              onClick={()=>handleActiveMarker(shipId)}
+            >
+            </MarkerF>
+            {/* <Polyline path={changePath} options={options} /> */}
           </GoogleMap>
         </div>
       </LoadScript>

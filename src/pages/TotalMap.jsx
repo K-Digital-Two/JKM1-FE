@@ -74,6 +74,7 @@ const TotalMap = ({ship}) => {
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
       {/* <Navbar className='p-3 w-[100%] h-20 absoulte z-20 bg-slate-600' ship={ship}/> */}
       {/* <Listbar className='flex z-10 h-screen' ship={ship} getShipClick={getShipClick}/> */}
+      <div className="z-10 bg-white h-[82px] w-screen absolute"/>
         <div className="z-0 absolute">
         <GoogleMap
           mapContainerStyle={containerStyle} // 구글맵 사이즈

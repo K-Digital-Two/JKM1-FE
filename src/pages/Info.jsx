@@ -19,7 +19,7 @@ const [modalClick , setModalClick] = useState(0)
 const [modalVisibledId, setModalVisibledId ] = useState("")
 const [slideMap, setSlideMap] = useState(false)
 const [correct, setCorrect] = useState("");
-const [color, setColor] = useState(['blue', 'red', 'yellow','green'])
+
 const [path , setPath]  = useState([{
   
   shipId :"",
@@ -28,24 +28,39 @@ const [path , setPath]  = useState([{
 }])
 
 // 진행률 bar 구현부분 함수 
-const bar = ship.map(({takeTime})=>
-  (takeTime/150)*100
-)
+const bar = ((takeTime)=>(takeTime/150)*100)
+
  
 // 용도에 따른 hover 변경함수
-// const useColor =
-//   ship.map(({shipUse}) => {
-//     if(shipUse === "선박용예선"){
-//       return 'black'
-//     }
-//     if(shipUse === "화물선"){
-//       return 'yellow'
-//     }
-//     if(shipUse === "유람선"){
-//       return 'gray'
-//     }
-//   }
-//   )
+const getColor =
+  ((shipUse) => {
+    if(shipUse === "선박용예선"){
+      return 'bg-emerald-300'
+    }
+    if(shipUse === "화물선"){
+      return 'bg-yellow-300'
+    }
+    if(shipUse === "유람선"){
+      return 'bg-gray-300'
+    }
+    if(shipUse === "유선"){
+      return 'bg-red-300'
+    }
+    if(shipUse === "컨테이너선박"){
+      return 'bg-green-300'
+    }
+    if(shipUse === "견인용예선"){
+      return 'bg-slate-300'
+    }
+    if(shipUse === "통통배"){
+      return 'bg-blue-300'
+    }
+    if(shipUse === "어선"){
+      return 'bg-orange-300'
+    }
+  }
+  )
+
 
 // console.log(useColor)
 // 검색 Search filter링 
@@ -58,37 +73,46 @@ const ModalHandler = (shipId)=>{
 
   return (
     <>
-      <div className="container flex justify-center mx-auto">
-      <Combobox className="">
-        <ComboboxInput 
-        className="bg-gray-200 text-black p-1 w-[30vw]"
-        placeholder="선박명검색"
-        onChange={(e) => {
-          setCorrect(e.target.value)
-        }} />
-        <ComboboxPopover>
-          <ComboboxList className="z-20">
-            {changeShip.map(({shipName,shipId})=>{
-              const str = `${shipName}`
-              return <ComboboxOption 
-              key={shipId}
-              value={str}/>
-            })}
-          </ComboboxList>
-        </ComboboxPopover>
-      </Combobox>
+      <div className="z-30 h-[82px] p-5">
+        <Combobox className="mx-[28%]">
+          <ComboboxInput 
+          className="bg-gray-100 text-black p-2 w-[40vw] rounded-md"
+          placeholder="🔍 선박명검색"
+          onChange={(e) => {
+            setCorrect(e.target.value)
+          }} />
+          <ComboboxPopover>
+            <ComboboxList className="absolute z-20 bg-white bg-opacity-80">
+              {changeShip.map(({shipName,shipId})=>{
+                const str = `${shipName}`
+                return <ComboboxOption 
+                key={shipId}
+                value={str}/>
+              })}
+            </ComboboxList>
+          </ComboboxPopover>
+        </Combobox>
     </div>
-      <div className="flex items-center justify-center mt-4 w-auto ">
-        <table className="shadow-lg bg-white border-collapse table-auto">
-          <tr className="">
-            <th align="right" className="bg-blue-100 border text-left px-6 py-2">선박명</th>
-            <th align="right" className="bg-blue-100 border text-left px-6 py-2">선박용도</th>
-            <th align="center" className="bg-blue-100 border text-left px-6 py-2">출발지</th>
-            <th align="center" className="bg-blue-100 border text-left px-6 py-2">도착지</th>
-            <th align="center" className="bg-blue-100 border text-left px-6 py-2">출발시각</th>
-            <th align="center" className="text-red-600 font-bold bg-blue-100 border text-left px-6 py-2">도착예정시각</th>
-            <th align="center" className="bg-blue-100 border text-left px-6 py-2">진행률</th>
-          </tr>
+    <div className="absoulte z-10 pl-48 pt-4 pb-[89px] bg-gray-100">
+        <div className="text-4xl">
+          List
+        </div>
+        <p className="text-sm mt-1">
+          운항중인 선박만 보여집니다.
+        </p>
+        <div className="mt-4 h-[670px] w-[1300px] overflow-auto">
+        
+        <div className="shadow-lg bg-white border-collapse">
+            <div className="grid grid-cols-7 text-left sticky top-0 bg-white">
+              <div className="px-8 py-4 w-52">선박명</div>
+              <div className="px-8 py-4 w-52">선박용도</div>
+              <div className="px-8 py-4 w-32">출발지</div>
+              <div className="px-8 py-4 w-32">도착지</div>
+              <div className="px-8 py-4 w-60">출발시각</div>
+              <div className="text-red-600 font-bold px-8 py-4 w-60">도착예정시각</div>
+              <div align="center" className="px-8 py-4 w-32">진행률</div>
+            </div>
+            <hr className="border-b-2 border-[#06283D] text-left sticky top-14 w-[1282px]"/>
 
           {changeShip.map(
             ({
@@ -105,42 +129,56 @@ const ModalHandler = (shipId)=>{
               departure,
               arrivalName
             }) => (
-             <tbody key={shipId} className="">
-                <tr className="relative">
-                  <th align="center" 
-                  className="border px-8 py-4 hover:bg-blue-200 "
-                  onClick={()=>{
-                    ModalHandler(shipId)
-                    setModalClick(modalClick === 1)
-                  }}>{shipName}</th>
-                  <td align="center" className={`border px-8 py-4 hover:${color}`}>{shipUse}</td>
-                  <td align="center" className="border px-8 py-4 ">{departure}</td>
-                  <td align="center" className="border px-8 py-4">{arrivalName}</td>
-                  <td align="center" className="border px-8 py-4 ">{departTime}</td>
-                  <td align="center" className="font-bold border px-8 py-4 text-red-600">{arrivalTime}</td>
-                  <td align="center" className="border px-8 py-4">
-                    <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                    <div className=" flex flex-col justify-center overflow-hidden bg-blue-500 text-xs text-white text-center"
-                    aria-valuenow="" aria-valuemin="0" aria-valuemax="100"
-                    style={{width : {}}}></div>
-                  </div>
-                  </td>
-                </tr>
+              <>
+                <div className="grid grid-cols-7 border text-left hover:bg-[#DFF6FF]"
+                key={shipId}
+                onClick={()=>{ 
+                  setModalClick(modalClick)
+                  ModalHandler(shipId)}}> 
+                    <div className="px-8 py-4 hover:bg--50">{shipName}</div>
+                    <div className="px-8 py-4 w-52">{shipUse}</div>
+                    <div className="px-8 py-4 w-32">{departure}</div>
+                    <div className="px-8 py-4 w-32">{arrivalName}</div>
+                    <div className="px-8 py-4 w-60">{departTime}</div>
+                    <div className="font-bold px-8 py-4 w-60">{arrivalTime}</div>
+                    <div className="px-8 py-4 w-32">
+                    <div className="flex w-full h-4 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
+                      <div className={`flex flex-col justify-center overflow-hidden ${getColor(shipUse)} text-xs text-white text-center`} 
+                      role="progressbar" 
+                      aria-valuenow="57"
+                      style={{width : Math.round(takeTime/150)*100 }} 
+                      aria-valuemin="0" 
+                      aria-valuemax="100">{Math.round(takeTime/150)*100}</div>
+                      </div>
+                    </div>
+                    <div className="col-span-7 font-bold">
                 <Modal 
                   shipId={shipId} shipLat={shipLat} shipLon={shipLon}
                   modalVisibledId={modalVisibledId} takeTime={takeTime}
                   shipName={shipName} speed={speed} accuracy={accuracy}
+                  arrivalName={arrivalName} departure={departure}
                   modalClick={modalClick} setModalClick={setModalClick} shipUse={shipUse} arrivalTime={arrivalTime} departTime={departTime} 
-                  setSlideMap={setSlideMap}/>
-                  </tbody>
+                  setSlideMap={setSlideMap}/></div>
+                  </div>
+                  </>
             )
           )}
-        </table>
+        </div>
+        
         {slideMap === true ? <ShipMap/> : null}
         </div>
-     
+      </div>
     </>
   );
 };
+
+// <tr className="hover:bg-red-300">
+// <tr className="hover:bg-yellow-300">
+// <tr className="hover:bg-blue-300">
+// <tr className="hover:bg-green-300">
+// <tr className="hover:bg-slate-300">
+// <tr className="hover:bg-orange-300">
+//<tr className="hover:bg-gray-300">
+//<tr className="hover:bg-emerald-300">
 
 export default Info;
