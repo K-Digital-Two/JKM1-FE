@@ -19,40 +19,53 @@ const {shipId} = useParams()
   const [path, setPath] = useState([]);
   const [changePath, setChangePath] = useState([]);
   const [startPath, setStartPath] = useState([]);
-  const [currentPath, setCurrentPath] = useState([])
+  const [timeGroup, setTimeGroup] = useState(1)
+  const [arrive , setArrive] = useState({
+    lat: 37.35,
+    lng: 126.99,
+  })
  
 
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   (async () => {
+  //     const result = await axios.get(
+  //       `http://localhost:8080/locations/${timeGroup}/${shipId}`
+  //     );
+  //     setPath(result.data);
+  //     console.log(changePath)
+        
+  //   })();
+  // }, []);
+
+  useEffect(()=>{
+  const interval = setInterval(()=>{
     (async () => {
       const result = await axios.get(
-        `http://localhost:8080/locations/${shipId}`
+        `http://localhost:8080/locations/${timeGroup}/${shipId}`
       );
       setPath(result.data);
-      console.log(changePath)
-    
-    })();
-  }, []);
+      setTimeGroup(timeGroup + 1)
+     
+    })()
+  }, 5000)
+  return () =>{
+    clearInterval(interval)
+  }
+},[path])
 
-// useEffect(()=>{
-//   const interval = setInterval(()=>{
-//     (async () => {
-//       const result = await axios.get(
-//         `http://localhost:8080/locations/${shipId}`
-//       );
-//       setPath(result.data);
-//       console.log(changePath)
-//     })()
-//   }, 5000)
-//   return () =>{
-//     clearInterval(interval)
-//   }
-// },[])
+
+
+
+
+
   
 for (let i in path) {
-  changePath.push({ lat: path[i].shipLat, lng: path[i].shipLon})
+  changePath.push({ lat:path[i].shipLat, lng: path[i].shipLon})
+ 
 }
 
+// const currentPath = path.push({ lat:path[0].shipLat, lng: path[0].shipLon})
 
   // 지도 스타일
   const containerStyle = {
@@ -88,7 +101,7 @@ for (let i in path) {
         <div className="">
           <GoogleMap
             mapContainerStyle={containerStyle} // 구글맵 사이즈
-            center={startPath[0]} // 로드시 위치
+            center={position} // 로드시 위치
             zoom={9} // 지도 확대 zoom 크기
             options={options}
           >
@@ -109,7 +122,7 @@ for (let i in path) {
               ) : null}
             </MarkerF>
             <MarkerF
-              position={currentPath[0]}
+              position={changePath[changePath.length-1]}
               icon={{
                 url: require("../img/ship.png"),
                 scaledSize: { width: 25, height: 25 },
@@ -121,6 +134,8 @@ for (let i in path) {
           </GoogleMap>
         </div>
       </LoadScript>
+     
+      
     </div>
   );
 };

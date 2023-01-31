@@ -14,12 +14,12 @@ const Modal = ({shipId,
   arrivalTime,
   arrivalName, modalVisibledId, modalClick, setModalClick,setSlideMap}) => {
 
- 
+
 
 
   return (
   <>
-    {modalVisibledId === shipId && !modalClick ? 
+    {modalVisibledId === shipId ?
       <div className='flex'>
         <MiniMap shipId={shipId} setSlideMap={setSlideMap}/> 
         <ul className='ml-3 mx-auto my-auto space-y-3'>
@@ -43,8 +43,7 @@ const Modal = ({shipId,
           <li className='pt-10'>소요시간</li>
           <li className='pb-4'>{`${takeTime}분`}</li>
         </ul>
-        <GrClose onClick={()=>
-          setModalClick(modalClick)}/>
+        <GrClose/>
         </div> 
         : null}
         

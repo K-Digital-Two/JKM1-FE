@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {useNavigate } from "react-router-dom";
-
+import {TiArrowSortedUp, TiArrowSortedDown} from 'react-icons/ti';
 import ShipMap from './ShipMap'
 import Modal from "../component/Modal";
 import {
@@ -61,10 +61,30 @@ const getColor =
   }
   )
 
-
 // console.log(useColor)
 // 검색 Search filter링 
 const changeShip = ship.filter((item) => item.shipName.includes(correct))
+
+const sorting = (item) => changeShip.sort(function(comp1, comp2) {
+  console.log("sorting", item.sort(function(a,b) {
+    var comp1UC = a.shipName.toUpperCase();
+  var comp2UC = b.shipName.toUpperCase();
+  if (comp1UC < comp2UC) {
+    return -1;
+  } else if (comp1UC > comp2UC) {
+    return 1;
+  }
+  return 0;
+  }))
+  var comp1UC = comp1.item.toUpperCase();
+  var comp2UC = comp2.item.toUpperCase();
+  if (comp1UC < comp2UC) {
+    return -1;
+  } else if (comp1UC > comp2UC) {
+    return 1;
+  }
+  return 0;
+})
 
 // Modal 함수
 const ModalHandler = (shipId)=>{
@@ -103,8 +123,26 @@ const ModalHandler = (shipId)=>{
         <div className="mt-4 h-[670px] w-[1300px] overflow-auto">
         
         <div className="shadow-lg bg-white border-collapse">
-            <div className="grid grid-cols-7 text-left sticky top-0 bg-white">
-              <div className="px-8 py-4 w-52">선박명</div>
+          <div className="grid grid-cols-7 text-left sticky top-0 bg-white">
+              <div className="px-8 py-4 w-52 flex gap-1 items-center">
+                <p>선박명</p>
+              <button><TiArrowSortedUp className="hover:bg-slate-100"
+                onClick={()=>sorting(changeShip)}
+                  />
+                <TiArrowSortedDown className="hover:bg-slate-100"
+                // onClick={changeShip.sort(function(comp1, comp2) {
+                //   // 대/소문자 구분 없이
+                //   var comp1UC = comp1.shipName.toUpperCase();
+                //   var comp2UC = comp2.shipName.toUpperCase();
+                //   if (comp1UC < comp2UC) {
+                //     return 1;
+                //   } else if (comp1UC > comp2UC) {
+                //     return -1;
+                //   }
+                //   return 0;
+                // })}
+                  />
+                </button></div>
               <div className="px-8 py-4 w-52">선박용도</div>
               <div className="px-8 py-4 w-32">출발지</div>
               <div className="px-8 py-4 w-32">도착지</div>

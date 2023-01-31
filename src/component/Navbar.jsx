@@ -22,8 +22,8 @@ const Navbar = ({ship}) => {
       <div className='flex py-4 px-6 items-center absolute z-20 bg-white '>
         <img src={Logo} 
         alt="로고"
-        className="w-[50px] h-[50px] mx-2" />
-        <p className='font-bold text-[30px] italic'>ShipTraffic.live</p>
+        className="w-[50px] h-[50px] mx-2 animate-flash" />
+        <p className='font-bold text-[30px] italic animate-swing'>ShipTraffic.live</p>
       </div>
       <div className='w-28 h-screen pt-[90px] absolute z-10 bg-[#06283D]'>
           <ul className='ml-1.5 mt-1  text-[#DFF6FF]' >

@@ -21,7 +21,7 @@ const MiniMap = ({shipId, setSlideMap }) => {
   useEffect(() => {
     (async () => {
       const result = await axios.get(
-        `http://localhost:8080/locations/${shipId}`
+        `http://localhost:8080/locations/1/${shipId}`
       );
       setPath(result.data);
     })();
