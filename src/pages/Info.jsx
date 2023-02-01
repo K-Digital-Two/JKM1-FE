@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import {useNavigate } from "react-router-dom";
 import {TiArrowSortedUp, TiArrowSortedDown} from 'react-icons/ti';
-import ShipMap from './ShipMap'
 import Modal from "../component/Modal";
 import {
   Combobox,
@@ -13,22 +11,20 @@ import {
 } from "@reach/combobox";
 
 
+
 const Info = ({ ship }) => {
   
 const [modalClick , setModalClick] = useState(0)  
 const [modalVisibledId, setModalVisibledId ] = useState("")
 const [slideMap, setSlideMap] = useState(false)
 const [correct, setCorrect] = useState("");
-
+const [sorted, setSorted] = useState()
 const [path , setPath]  = useState([{
   
   shipId :"",
   shipLat : "",
   shipLon :""
 }])
-
-// 진행률 bar 구현부분 함수 
-const bar = ((takeTime)=>(takeTime/150)*100)
 
  
 // 용도에 따른 hover 변경함수
@@ -58,42 +54,53 @@ const getColor =
     if(shipUse === "어선"){
       return 'bg-orange-300'
     }
+    if(shipUse === "풀컨테이너선"){
+      return 'bg-cyan-100'
+    }
   }
   )
+const sortList = [{}]
 
-// console.log(useColor)
 // 검색 Search filter링 
 const changeShip = ship.filter((item) => item.shipName.includes(correct))
 
-const sorting = (item) => changeShip.sort(function(comp1, comp2) {
-  console.log("sorting", item.sort(function(a,b) {
-    var comp1UC = a.shipName.toUpperCase();
-  var comp2UC = b.shipName.toUpperCase();
+
+
+
+const sorting = (item) => item.sort(function(comp1, comp2) {
+  var comp1UC = comp1.arrivalTime.toUpperCase();
+  var comp2UC = comp2.arrivalTime.toUpperCase();
   if (comp1UC < comp2UC) {
     return -1;
   } else if (comp1UC > comp2UC) {
     return 1;
   }
-  return 0;
-  }))
-  var comp1UC = comp1.item.toUpperCase();
-  var comp2UC = comp2.item.toUpperCase();
-  if (comp1UC < comp2UC) {
-    return -1;
-  } else if (comp1UC > comp2UC) {
-    return 1;
-  }
+  console.log(item)
   return 0;
 })
+
+
+
+
+
+
+
 
 // Modal 함수
 const ModalHandler = (shipId)=>{
   setModalVisibledId(shipId)
 }
 
+
+
+
+
+
+
+
   return (
     <>
-      <div className="z-30 h-[82px] p-5">
+      <div className="z-30 h-[82px] p-5 ">
         <Combobox className="mx-[28%]">
           <ComboboxInput 
           className="bg-gray-100 text-black p-2 w-[40vw] rounded-md"
@@ -126,33 +133,24 @@ const ModalHandler = (shipId)=>{
           <div className="grid grid-cols-7 text-left sticky top-0 bg-white">
               <div className="px-8 py-4 w-52 flex gap-1 items-center">
                 <p>선박명</p>
-              <button><TiArrowSortedUp className="hover:bg-slate-100"
-                onClick={()=>sorting(changeShip)}
-                  />
-                <TiArrowSortedDown className="hover:bg-slate-100"
-                // onClick={changeShip.sort(function(comp1, comp2) {
-                //   // 대/소문자 구분 없이
-                //   var comp1UC = comp1.shipName.toUpperCase();
-                //   var comp2UC = comp2.shipName.toUpperCase();
-                //   if (comp1UC < comp2UC) {
-                //     return 1;
-                //   } else if (comp1UC > comp2UC) {
-                //     return -1;
-                //   }
-                //   return 0;
-                // })}
-                  />
-                </button></div>
+             </div>
               <div className="px-8 py-4 w-52">선박용도</div>
               <div className="px-8 py-4 w-32">출발지</div>
               <div className="px-8 py-4 w-32">도착지</div>
               <div className="px-8 py-4 w-60">출발시각</div>
-              <div className="text-red-600 font-bold px-8 py-4 w-60">도착예정시각</div>
+              <div className="text-red-600 px-8 py-4 w-52 flex gap-1 items-center">
+                <p>도착예정시각</p>
+              <button><TiArrowSortedUp className="hover:bg-slate-100"
+                onClick={()=>setSorted(true)
+                } />
+                <TiArrowSortedDown className="hover:bg-slate-100"
+                onClick={()=>setSorted(false)}/>
+                </button></div>
               <div align="center" className="px-8 py-4 w-32">진행률</div>
             </div>
             <hr className="border-b-2 border-[#06283D] text-left sticky top-14 w-[1282px]"/>
 
-          {changeShip.map(
+          {sorted ? sorting(changeShip).map(
             ({
               shipId,
               shipName,
@@ -161,6 +159,59 @@ const ModalHandler = (shipId)=>{
               takeTime,
               shipUse,
               speed,
+              totalTakeTime,
+              departTime,
+              arrivalTime,
+              accuracy,
+              departure,
+              arrivalName
+            }) => (
+              <>
+                <div className="grid grid-cols-7 border text-left hover:bg-[#DFF6FF]"
+                key={shipId}
+                onClick={()=>{ 
+                  setModalClick(1)
+                  ModalHandler(shipId)
+                 }}> 
+               
+                    <div className="px-8 py-4 hover:bg--50">{shipName}</div>
+                    <div className="px-8 py-4 w-52">{shipUse}</div>
+                    <div className="px-8 py-4 w-32">{departure}</div>
+                    <div className="px-8 py-4 w-32">{arrivalName}</div>
+                    <div className="px-8 py-4 w-60">{departTime}</div>
+                    <div className="font-bold px-8 py-4 w-60">{arrivalTime}</div>
+                    <div className="px-8 py-4 w-32">
+                    <div className="flex w-full h-4 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
+                      <div className={`flex flex-col justify-center overflow-hidden ${getColor(shipUse)} text-xs text-white text-center`} 
+                      role="progressbar" 
+                      aria-valuenow="57"
+                      style={{width : Math.round(takeTime / totalTakeTime)}} 
+                      aria-valuemin="0" 
+                      aria-valuemax="100">{ Math.round(takeTime / totalTakeTime)}</div>
+                      </div>
+                    </div>
+                    <div className="col-span-7 font-bold">
+                    </div>
+                 <Modal 
+                  shipId={shipId} shipLat={shipLat} shipLon={shipLon}
+                  modalVisibledId={modalVisibledId} takeTime={takeTime}
+                  shipName={shipName} speed={speed} accuracy={accuracy}
+                  arrivalName={arrivalName} departure={departure}
+                  modalClick={modalClick} setModalClick={setModalClick} shipUse={shipUse} arrivalTime={arrivalTime} departTime={departTime} 
+                  setSlideMap={setSlideMap}/></div>
+             
+                  </>
+            )
+          ) : changeShip.map(
+            ({
+              shipId,
+              shipName,
+              shipLat,
+              shipLon,
+              takeTime,
+              shipUse,
+              speed,
+              totalTakeTime,
               departTime,
               arrivalTime,
               accuracy,
@@ -181,12 +232,12 @@ const ModalHandler = (shipId)=>{
                     <div className="font-bold px-8 py-4 w-60">{arrivalTime}</div>
                     <div className="px-8 py-4 w-32">
                     <div className="flex w-full h-4 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
-                      <div className={`flex flex-col justify-center overflow-hidden ${getColor(shipUse)} text-xs text-white text-center`} 
+                      <div className={`flex flex-col justify-center overflow-hidden ${getColor(shipUse)} text-xs text-black text-center`} 
                       role="progressbar" 
-                      aria-valuenow="57"
-                      style={{width : Math.round(takeTime/150)*100 }} 
+                      aria-valuenow="10"
+                      style={{width : Math.round(takeTime / totalTakeTime) }} 
                       aria-valuemin="0" 
-                      aria-valuemax="100">{Math.round(takeTime/150)*100}</div>
+                      aria-valuemax="200">{ Math.round(takeTime / totalTakeTime)}</div>
                       </div>
                     </div>
                     <div className="col-span-7 font-bold">
@@ -195,15 +246,13 @@ const ModalHandler = (shipId)=>{
                   modalVisibledId={modalVisibledId} takeTime={takeTime}
                   shipName={shipName} speed={speed} accuracy={accuracy}
                   arrivalName={arrivalName} departure={departure}
-                  modalClick={modalClick} setModalClick={setModalClick} shipUse={shipUse} arrivalTime={arrivalTime} departTime={departTime} 
+                  ModalHandler={ModalHandler} shipUse={shipUse} arrivalTime={arrivalTime} departTime={departTime} 
                   setSlideMap={setSlideMap}/></div>
                   </div>
                   </>
             )
           )}
         </div>
-        
-        {slideMap === true ? <ShipMap/> : null}
         </div>
       </div>
     </>
@@ -218,5 +267,6 @@ const ModalHandler = (shipId)=>{
 // <tr className="hover:bg-orange-300">
 //<tr className="hover:bg-gray-300">
 //<tr className="hover:bg-emerald-300">
+//<tr className="hover:bg-cyan-100">
 
 export default Info;

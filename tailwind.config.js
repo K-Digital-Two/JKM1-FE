@@ -26,8 +26,8 @@ module.exports = {
           '70%': { transform: 'scale(1);' },
         },
         slide : {
-          '0%, 100%' : {transform : 'translateX(400px)'},
-          '50%' : {transform : 'translateX(200px)'}
+          '0%, 100%' : {transform : 'translateX(500px)'},
+          '50%' : {transform : 'translateX(250px)'}
         },
         flipHorizontal: {
           '50%': { transform: 'rotateY(180deg)' },

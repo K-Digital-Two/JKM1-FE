@@ -12,7 +12,7 @@ const Modal = ({shipId,
   speed,
   departTime,
   arrivalTime,
-  arrivalName, modalVisibledId, modalClick, setModalClick,setSlideMap}) => {
+  arrivalName, modalVisibledId,setModalClick,setSlideMap}) => {
 
 
 
@@ -23,8 +23,8 @@ const Modal = ({shipId,
       <div className='flex'>
         <MiniMap shipId={shipId} setSlideMap={setSlideMap}/> 
         <ul className='ml-3 mx-auto my-auto space-y-3'>
-          <li>선박명</li>
-          <li>{shipName}</li>
+          <li>선박명 / MMSI</li>
+          <li>{shipName} / {shipId}</li>
           <li className='pt-2'>현재위치</li>
           <li>{`(위도)${shipLat}`}</li>
           <li>{`(경도)${shipLon}`}</li>
@@ -43,7 +43,8 @@ const Modal = ({shipId,
           <li className='pt-10'>소요시간</li>
           <li className='pb-4'>{`${takeTime}분`}</li>
         </ul>
-        <GrClose/>
+        {/* <GrClose className='z-30' 
+        onClick={()=>ModalHandler(!shipId)}/> */}
         </div> 
         : null}
         

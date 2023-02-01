@@ -21,7 +21,7 @@ const Detail = ({
 
   const answers = [
     { icons: <SiCodeship />, title: "MMSI / 선박명", answer: shipId, shipName },
-    {icons: <BsInfoCircle />,title: "현위치",answer: `(위도)${shipLat} / (경도)${shipLon}`,},
+    { icons: <BsInfoCircle />,title: "현위치",answer: `(위도)${shipLat} / (경도)${shipLon}`,},
     { icons: <BsInfoCircle />, title: "선박용도", answer: shipUse },
     { icons: <BsSpeedometer />, title: "선박속도", answer: speed + "m/s" },
     { icons: <TiMediaPlay />, title: "출발시간", answer: departTime },
@@ -31,9 +31,10 @@ const Detail = ({
 
   return (
     <>
-      <div className="text-center font-bold text-blue-900 text-xl"></div>
-      <div className="mt-1">
+      <div className=" absolute text-center font-bold text-blue-900 text-xl">
+
       </div>
+    
     </>
   );
 };

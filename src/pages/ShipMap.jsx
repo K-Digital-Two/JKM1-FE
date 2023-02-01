@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import MapStyles from "../MapStyles";
 import axios from "axios";
+
 import Detail from "../component/Detail";
 import {
   GoogleMap,
@@ -9,7 +10,7 @@ import {
   MarkerF,
   Polyline,
 } from "@react-google-maps/api";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 
 const ShipMap = ({ship}) => {
@@ -20,23 +21,12 @@ const {shipId} = useParams()
   const [changePath, setChangePath] = useState([]);
   const [startPath, setStartPath] = useState([]);
   const [timeGroup, setTimeGroup] = useState(1)
+  const [changeTime, setChangeTime] = useState([])
   const [arrive , setArrive] = useState({
     lat: 37.35,
     lng: 126.99,
   })
- 
 
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const result = await axios.get(
-  //       `http://localhost:8080/locations/${timeGroup}/${shipId}`
-  //     );
-  //     setPath(result.data);
-  //     console.log(changePath)
-        
-  //   })();
-  // }, []);
 
   useEffect(()=>{
   const interval = setInterval(()=>{
@@ -46,26 +36,20 @@ const {shipId} = useParams()
       );
       setPath(result.data);
       setTimeGroup(timeGroup + 1)
-     
+     console.log(changePath)
     })()
   }, 5000)
   return () =>{
     clearInterval(interval)
+
   }
 },[path])
 
-
-
-
-
-
-  
 for (let i in path) {
-  changePath.push({ lat:path[i].shipLat, lng: path[i].shipLon})
- 
+  changePath.push({lat:path[i].shipLat, lng: path[i].shipLon})
+  changeTime.push(path[i].takeTime)
 }
 
-// const currentPath = path.push({ lat:path[0].shipLat, lng: path[0].shipLon})
 
   // 지도 스타일
   const containerStyle = {
@@ -121,16 +105,47 @@ for (let i in path) {
                 </InfoWindow>
               ) : null}
             </MarkerF>
+            {ship.map(({shipId, shipName,
+                          shipLat ,
+                          shipLon ,
+                          takeTime,
+                          shipUse,
+                          speed,
+                          departTime,
+                          arrivalTime,
+                          accuracy,
+                          departure,
+                          arrivalName})=>(
             <MarkerF
-              position={changePath[changePath.length-1]}
-              icon={{
-                url: require("../img/ship.png"),
-                scaledSize: { width: 25, height: 25 },
-              }}
-              onClick={()=>handleActiveMarker(shipId)}
+            key={takeTime}
+            position={changePath[changePath.length-1]}
+            icon={{
+              url :require("../img/ship.png"),
+              scaledSize : {width : 25, height:25}
+            }}
+            onClick={() => {handleActiveMarker(shipId)
+            }} 
             >
+               {/* 마커랑 아이디값이 동일하면 infowindow UI 보여줌 */}
+              {activeMarker === shipId? (
+                <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                  <div className="font-bold p-2">
+                    <p>선박명 : {shipName}</p>
+                    <p>위도 : {path[path.length-1].shipLat}</p>
+                    <p>경도 : {path[path.length-1].shipLon}</p>
+                    <p>도착예정시간 : {changeTime[changeTime.length-1]}분</p>
+                    <span className="flex justify-center">
+                    <button
+                        className=" bg-blue-500 rounded-full text-white flex p-1 mt-2"
+                        >
+                        상세보기
+                      </button>
+                    </span>
+                  </div>
+                </InfoWindow>
+              ) : null}
             </MarkerF>
-            {/* <Polyline path={changePath} options={options} /> */}
+           ))}
           </GoogleMap>
         </div>
       </LoadScript>
