@@ -16,15 +16,15 @@ You may also see any lint errors in the console.
 
 ### 라이브러리 설치 
 
-npm install react-router-dom
+`npm install react-router-dom`
 
-npm install axios
+`npm install axios`
 
-npm install --save @react-google-maps/api
+`npm install --save @react-google-maps/api`
 
-npm install react-icons --save
+`npm install react-icons --save`
 
-npm install --legacy-peer-deps @reach/combobox
+`npm install --legacy-peer-deps @reach/combobox`
 
-npm install swiper --legacy-peer-deps
+`npm install swiper --legacy-peer-deps`
 
