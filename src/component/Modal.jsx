@@ -1,6 +1,5 @@
 import {React, useState} from 'react'
 import MiniMap from '../pages/MiniMap'
-import Detail from './Detail'
 import {GrClose} from 'react-icons/gr'
 
 const Modal = ({shipId,
@@ -12,7 +11,7 @@ const Modal = ({shipId,
   speed,
   departTime,
   arrivalTime,
-  arrivalName, modalVisibledId,setModalClick,setSlideMap}) => {
+  arrivalName, modalVisibledId, setModalClick,ModalHandler}) => {
 
 
 
@@ -21,7 +20,7 @@ const Modal = ({shipId,
   <>
     {modalVisibledId === shipId ?
       <div className='flex'>
-        <MiniMap shipId={shipId} setSlideMap={setSlideMap}/> 
+        <MiniMap shipId={shipId} /> 
         <ul className='ml-3 mx-auto my-auto space-y-3'>
           <li>선박명 / MMSI</li>
           <li>{shipName} / {shipId}</li>
@@ -39,12 +38,12 @@ const Modal = ({shipId,
         </ul>
         <ul className='ml-3 mx-auto my-auto space-y-3'>
           <li>선박속도</li>
-          <li>{speed}</li>
+          <li>{speed}m/s</li>
           <li className='pt-10'>소요시간</li>
           <li className='pb-4'>{`${takeTime}분`}</li>
         </ul>
-        {/* <GrClose className='z-30' 
-        onClick={()=>ModalHandler(!shipId)}/> */}
+        <GrClose className='z-30' 
+        onClick={()=> {ModalHandler(!shipId)}}/>
         </div> 
         : null}
         

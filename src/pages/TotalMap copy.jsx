@@ -12,7 +12,7 @@ import {
 } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 
-const TotalMap = ({timeGroup}) => {
+const TotalMap = () => {
   const [ship, setShip] = useState([
     {
       shipId: "",
@@ -31,7 +31,7 @@ const TotalMap = ({timeGroup}) => {
   ]);
 
   const [changePath, setChangePath] = useState([]);
-  const [, setTimeGroup] = useState()
+  const [timeGroup, setTimeGroup] = useState(1)
   const [activeMarker, setActiveMarker] = useState(null);
   const [countDetail, setCountDetail] = useState(0)
   const [shipClick, setShipClick] = useState()
@@ -47,7 +47,7 @@ const TotalMap = ({timeGroup}) => {
       setShip(result.data);
       setTimeGroup(timeGroup + 1)   
       // console.log(changePath)
-      console.log(timeGroup)
+      // console.log(timeGroup)
       // console.log(ship)
     })()
     .catch(()=>{
@@ -242,7 +242,7 @@ for (let i in path) {
                           departure,
                           arrivalName})=>(
             <MarkerF
-            key={shipId}
+            key={shipName}
             position={{lat : parseFloat(shipLat) , lng : parseFloat(shipLon)}}
             icon={{
               // url : require(`../img/${getMarker(shipUse)}.png`),
@@ -250,14 +250,14 @@ for (let i in path) {
               scaledSize : {width : 25, height:25}
              
             }}
-            onClick={() => handleActiveMarker(shipLat)} 
+            onClick={() => {handleActiveMarker(shipId)}} 
             
             >
               {/* 마커랑 아이디값이 동일하면 infowindow UI 보여줌 */}
-              {activeMarker === shipLat ? (
+              {activeMarker === shipId? (
                 <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                   <div className="font-bold p-2">
-                    <p>선박명 : {}</p>
+                    <p>선박명 : {shipName}</p>
                     <p>위도 : {shipLat}</p>
                     <p>경도 : {shipLon}</p>
                     <p>도착예정시간 : {takeTime}분</p>

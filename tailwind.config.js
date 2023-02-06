@@ -6,10 +6,11 @@ module.exports = {
 
 ],
   theme: {
-    fontFamily : {
-      display : ['Pretendard-Regular']
-    },
     extend: {
+      fontFamily : {
+        display : ['Pretendard-Regular'],
+        set : ['Noto Serif KR']
+      },
       backgroundImage :{
         'blue-screen' : "url('./img/back.png')"
       },
@@ -26,8 +27,8 @@ module.exports = {
           '70%': { transform: 'scale(1);' },
         },
         slide : {
-          '0%, 100%' : {transform : 'translateX(500px)'},
-          '50%' : {transform : 'translateX(250px)'}
+          '0%, 100%' : {transform : 'translateX(15px)'},
+          // '50%' : {transform : 'translateX(0px)'}
         },
         flipHorizontal: {
           '50%': { transform: 'rotateY(180deg)' },
@@ -181,11 +182,13 @@ module.exports = {
         vflip: 'flipVertical 2s infinite',
         swing: 'swing 2s ease-out ',
         rubberBand: 'rubberBand 1s infinite',
-        flash: 'flash 2s infinite',
+        flash: 'flash 3s infinite',
         headShake: 'headShake 2s infinite',
         wobble: 'wobble 1s ',
         jello: 'jello 2s infinite',
-        slide : 'slide 3s ease-in'
+        slide : 'slide 3s ease-in',
+        flash2 : 'flash 4s infinite'
+        
       },
     },
   },

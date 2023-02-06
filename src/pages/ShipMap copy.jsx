@@ -70,7 +70,7 @@ const getMarker =
   const [polyPath, setPolyPath] = useState([])
   const [changePath, setChangePath] = useState([]);
   const [goDetail, setGoDetail] = useState()
-  const [timeGroup, setTimeGroup] = useState(2)
+  const [timeGroup, setTimeGroup] = useState(1)
   const [changeTime, setChangeTime] = useState([])
   const [showInTime, setShowInTime] = useState([])
   
@@ -81,44 +81,42 @@ const getMarker =
 
 
   useEffect(()=>{
-    const interval = setInterval(()=>{
-      (async () => {
-        const result = await axios.get(
-          `http://localhost:8080/locations/${timeGroup}/${shipId}`
-        );
-        setPath(result.data);
-        setTimeGroup(timeGroup + 1)
-          console.log(path)
-       
-        // 인천항 도착이면 Info 페이지로 이동
-      //  if(changePath[changePath.length-1].lat >= arrive.lat){
-      //     navigate('/info') 
-      //  }
-       for(let i in obs){
-        if(changePath[changePath.length-1].lat >= obs[i].obsLat){
-            setShipEffect(obs[i].obsName)
-        }
-        // console.log(changePath[changePath.length-1].lat)
-        // console.log(obs[i].obsLat)
-      }
-      })()
-      .catch(()=>{
-        console.log("데이터못불러옴")
-      })
-    },3000)
-    return () =>{
-      clearInterval(interval)
-    } 
-  },[path])
-  for (let i in path) {
-    changePath.push({lat:path[i].shipLat, lng: path[i].shipLon})
-    changeTime.push(path[i].takeTime)
-    showInTime.push(path[i].insertTime)
+  const interval = setInterval(()=>{
+    (async () => {
+      const result = await axios.get(
+        `http://localhost:8080/locations/${timeGroup}/${shipId}`
+      );
+      setPath(result.data);
+      setTimeGroup(timeGroup + 1)
   
-  }
+     
+      // 인천항 도착이면 Info 페이지로 이동
+    //  if(changePath[changePath.length-1].lat >= arrive.lat){
+    //     navigate('/info') 
+    //  }
+     for(let i in obs){
+      if(changePath[changePath.length-1].lat >= obs[i].obsLat){
+          setShipEffect(obs[i].obsName)
+      }
+      console.log(changePath[changePath.length-1].lat)
+      console.log(obs[i].obsLat)
+    }
+    })()
+    .catch(()=>{
+      console.log("데이터못불러옴")
+    })
+  },3000)
+  return () =>{
+    clearInterval(interval)
+  } 
+},[path])
 
+for (let i in path) {
+  changePath.push({lat:path[i].shipLat, lng: path[i].shipLon})
+  changeTime.push(path[i].takeTime)
+  showInTime.push(path[i].insertTime)
 
-
+}
 
 
 
@@ -172,7 +170,7 @@ useEffect(()=>{
 
 
   // Marker 클릭, hover 변경 state
-  const [activeMarker, setActiveMarker] = useState();
+  const [activeMarker, setActiveMarker] = useState(null);
 
   const handleActiveMarker = (marker) => {
     if (marker === activeMarker) {
@@ -217,7 +215,6 @@ useEffect(()=>{
                 </InfoWindow>
               ) : null}
             </MarkerF>
-            
             {path.map(({shipId, shipName,
                           shipLat ,
                           shipLon ,
@@ -232,23 +229,23 @@ useEffect(()=>{
                           arrivalName})=>(
             <MarkerF
             key={takeTime}
-            position={{lat : changePath[changePath.length-1].lat , lng : changePath[changePath.length-1].lng}}
+            position={{lat : shipLat , lng : shipLon}}
             icon={{
               // url : require(`../img/${getMarker(shipUse)}.png`),
               url : require("../img/ship.png"),
               scaledSize : {width : 25, height:25}
             }}
-            onClick={() => handleActiveMarker(shipLat)
-            } 
+            onClick={() => {handleActiveMarker(shipId)
+            }} 
             >
                {/* 마커랑 아이디값이 동일하면 infowindow UI 보여줌 */}
-              {activeMarker === shipLat ? (
+              {activeMarker === shipId? (
                 <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                   <div className="font-bold p-2">
                     <p>선박명 : {shipName}</p>
-                    <p>위도 : {changePath[changePath.length-1].lat}</p>
-                    <p>경도 : {changePath[changePath.length-1].lng}</p>
-                    {/* <p className="text-red-500 font-bold">도착예정시간 : <span className="text-[20px]">{changeTime[changeTime.length-1]}분</span></p> */}
+                    <p>위도 : {path[path.length-1].shipLat}</p>
+                    <p>경도 : {path[path.length-1].shipLon}</p>
+                    <p className="text-red-500 font-bold">도착예정시간 : <span className="text-[20px]">{changeTime[changeTime.length-1]}분</span></p>
                     <button className="font-bold border border-blue-300 rounded-full bg-blue-400 ml-11"
                     onClick={()=>{
                       setPolyPath(changePath)
