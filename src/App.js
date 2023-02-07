@@ -29,7 +29,7 @@ function App() {
   const [timeGroup, setTimeGroup] = useState(1)
   useEffect(() => {
     const interval = setInterval(()=>{
-      setTimeGroup(timeGroup + 1)}, 500)
+      setTimeGroup(timeGroup + 1)}, 5000)
     return () =>{
       clearInterval(interval)
     } });

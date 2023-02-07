@@ -1,13 +1,13 @@
 import { React, useState, useEffect, useRef } from "react";
 import MapStyles from "../MapStyles";
 import axios from "axios";
+import Detail from "../component/Detail";
 
 import {
   Circle,
   GoogleMap,
   InfoWindow,
   LoadScript,
-  Marker,
   MarkerF,
 } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
@@ -31,9 +31,7 @@ const TotalMap = ({timeGroup}) => {
   ]);
 
   const [changePath, setChangePath] = useState([]);
-  const [, setTimeGroup] = useState()
   const [activeMarker, setActiveMarker] = useState(null);
-  const [countDetail, setCountDetail] = useState(0)
   const [shipClick, setShipClick] = useState()
   const [path, setPath] = useState([])
   const [obs, setObs] = useState([])
@@ -45,15 +43,11 @@ const TotalMap = ({timeGroup}) => {
       const result = await axios.get(
         `http://localhost:8080/locations/${timeGroup}`);
       setShip(result.data);
-      setTimeGroup(timeGroup + 1)   
       // console.log(changePath)
-      console.log(timeGroup)
+      // console.log(timeGroup)
       // console.log(ship)
     })()
-    .catch(()=>{
-      console.log("데이터못불러옴")
-    })
-  }, 1000)
+  })
   return () =>{
     clearInterval(interval)
   } 
@@ -67,9 +61,6 @@ useEffect(()=>{
     setObs(result2.data);
     console.log(obs)
   })()
-  .catch(()=>{
-    console.log("데이터못불러옴")
-  })
 },[])
 
 
@@ -93,8 +84,8 @@ for (let i in ship) {
   const mapRef = useRef(null);
   const [position, setPosition] = useState(
     {
-      lat: 37.050528979619266, 
-      lng: 124.80198175584647
+      lat: 37.49012631842129,
+      lng: 126.62878763527841,
     },
   );
 
@@ -124,12 +115,8 @@ for (let i in ship) {
     draggable: false,
     editable: false,
     visible: true,
-    radius: 30000,
     zIndex: 1,
   };
-
-
-
 
   const getShipClick = (text)=>{
       setShipClick(text)
@@ -142,6 +129,10 @@ for (let i in ship) {
   };
  
  const navigate = useNavigate()
+  const [showDetail, setShowDetail] = useState(true)
+  const [detailInfo, setDetailInfo] = useState()
+  const [countDetail, setCountDetail] = useState(0)
+  const [showInTime, setShowInTime] = useState([])
 
  const getMarker =
  ((shipUse) => {
@@ -194,16 +185,19 @@ for (let i in ship) {
  
 for (let i in path) {
   changePath.push({lat:path[i].shipLat, lng: path[i].shipLon})
+  showInTime.push(path[i].inserTime)
 }
-
 
   return (
     <>
       {/* 구글 맵 api 받아오기 */}
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
-    
       <div className="z-10 bg-white h-[82px] w-screen absolute"/>
         <div className="z-0 absolute">
+        <div className="text-black absolute mt-24 ml-32 z-20 w-[92%] flex justify-between">
+          <div className="text-[16px] bg-white p-1 rounded-md">현재 선박 척수 : {ship.length}척</div>
+          <div className="text-[16px] bg-white p-1 rounded-md">입력 시각 : {showInTime}</div>
+        </div>
         <GoogleMap
           mapContainerStyle={containerStyle} // 구글맵 사이즈
           center={position} // 로드시 위치
@@ -211,13 +205,10 @@ for (let i in path) {
           options={options}
         >
           <MarkerF
-          position={{ 
-            lat: 37.46513050623015,
-            lng:  126.61136800252747,}}
+          position={position}
           icon={{
             url : require("../img/shipMarker.png"),
             scaledSize : {width : 40, height : 40},
-            
           }}
           onClick={()=> handleActiveMarker("인천항")}
           >
@@ -227,7 +218,13 @@ for (let i in path) {
                   <p>인천항</p>
                   </div>
             </InfoWindow>
+        //     ,<Circle
+        // center={position}
+        // radius = {80467.2}
+        // options={circleOptions}
+        // />
           ):null}
+          
           </MarkerF>
           {/* 마커 정보 mapping */}
           {ship.map(({shipId, shipName,
@@ -242,7 +239,7 @@ for (let i in path) {
                           departure,
                           arrivalName})=>(
             <MarkerF
-            key={shipId}
+            key={shipName}
             position={{lat : parseFloat(shipLat) , lng : parseFloat(shipLon)}}
             icon={{
               // url : require(`../img/${getMarker(shipUse)}.png`),
@@ -250,18 +247,41 @@ for (let i in path) {
               scaledSize : {width : 25, height:25}
              
             }}
-            onClick={() => handleActiveMarker(shipLat)} 
+            onClick={() => {handleActiveMarker(shipId)}} 
             
             >
               {/* 마커랑 아이디값이 동일하면 infowindow UI 보여줌 */}
-              {activeMarker === shipLat ? (
+              {activeMarker === shipId? (
                 <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                   <div className="font-bold p-2">
-                    <p>선박명 : {}</p>
+                    <p>선박명 : {shipName}</p>
                     <p>위도 : {shipLat}</p>
                     <p>경도 : {shipLon}</p>
                     <p>도착예정시간 : {takeTime}분</p>
                     <span className="flex justify-center">
+                    <button
+                        className=" bg-blue-500 rounded-full text-white flex p-1 mt-2"
+                        onClick={() =>{ 
+                          console.log("클릭")
+                          setShowDetail(!showDetail)
+                          setDetailInfo([{  
+                          shipId,
+                          shipName,
+                          shipLat ,
+                          shipLon ,
+                          takeTime,
+                          shipUse,
+                          speed,
+                          departTime,
+                          arrivalTime,
+                          accuracy,
+                          departure,
+                          arrivalName}])                          
+                        setCountDetail(countDetail)
+                        }}
+                      >
+                        상세보기
+                      </button>
                     </span>
                   </div>
                 </InfoWindow>
@@ -269,13 +289,14 @@ for (let i in path) {
             </MarkerF>
         ))}
 
-        {obs.map(({obsId, obsName, obsLat, obsLon})=>(
+          {obs.map(({obsId, obsName, obsLat, obsLon})=>(
             <MarkerF
             key={obsId}
             icon={{
               url : require("../img/m2.png"),
-              scaledSize : {width : 25, height : 25}
+              scaledSize : {width : 50, height : 50}
             }}
+            animation={2}
             position={{lat : parseFloat(obsLat), lng : parseFloat(obsLon)}}
             onClick={()=>{handleActiveMarker(obsName)}}
             
@@ -298,79 +319,15 @@ for (let i in path) {
         options={circleOptions}
         />:null}
         </MarkerF>
-        ))}        
-
-
-
-
-
-        {/* <MarkerF
-        icon={{
-          url : require("../img/m2.png"),
-          scaledSize : {width : 25, height : 25}
-        }}
-        position={{lat : 36.590781400156004, lng : 126.30540784017813}}
-        onClick={()=>{handleActiveMarker("관측소")}}
-        animation ={1}
-        >
-          {activeMarker === "관측소" ? (
-            <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                  <div className="font-bold p-2">
-                    <p>선박명 : 관측소</p>
-                    <p>위도 : </p>
-                    <p>경도 :</p>
-                    <p>도착예정시간 : 분</p>
-                    <span className="flex justify-center">
-                    </span>
-                  </div>
-                </InfoWindow>
-                  ) : null}
-        </MarkerF>
-        <Circle
-        center={{lat : 36.590781400156004, lng : 126.30540784017813}}
-        radius = {128.748}
-        options={circleOptions2}
-        
-        />
-
-
-
-
-         <MarkerF
-        icon={{
-          url : require("../img/m2.png"),
-          scaledSize : {width : 25, height : 25}
-        }}
-        position={{lat : 37.70918028888277, lng : 125.34580570799294 }}
-        onClick={()=>{handleActiveMarker("관측소2")}}
-        animation ={1}
-        >
-          {activeMarker === "관측소2" ? (
-            <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                  <div className="font-bold p-2">
-                    <p>선박명 : 관측소2</p>
-                    <p>위도 : </p>
-                    <p>경도 :</p>
-                    <p>도착예정시간 : 분</p>
-                    <span className="flex justify-center">
-                    </span> 
-                  </div>
-                </InfoWindow>
-                  ) : null}
-        </MarkerF>
-        <Circle
-        center={{lat : 37.70918028888277, lng : 125.34580570799294}}
-        radius = {128.748}
-        options={circleOptions}
-        
-        /> */}
+        ))}               
         </GoogleMap>
         </div>
       </LoadScript>
+      {!showDetail ? <Detail detailInfo={detailInfo} countDetail={countDetail}/> : null}
+
     </>
   
   );
 };
 
 export default TotalMap;
-
