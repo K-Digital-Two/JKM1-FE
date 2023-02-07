@@ -6,42 +6,54 @@ import Info from "./pages/Info";
 import ShipMap from "./pages/ShipMap";
 import TotalMap from "./pages/TotalMap";
 import Home from "./pages/Home";
+import Login from "./login/Login";
 
 function App() {
-  const [ship, setShip] = useState([
-    {
-      shipId: "",
-      shipName: "",
-      shipLat: "",
-      shipLon: "",
-      takeTime: "",
-      shipUse: "",
-      speed: "",
-      departTime: "",
-      arrivalTime: "",
-      accuracy: "",
-      departure: "",
-      arrivalName: "",
-    },
-  ]);
+  // const [ship, setShip] = useState([
+  //   {
+  //     shipId: "",
+  //     shipName: "",
+  //     shipLat: "",
+  //     shipLon: "",
+  //     takeTime: "",
+  //     shipUse: "",
+  //     speed: "",
+  //     departTime: "",
+  //     arrivalTime: "",
+  //     accuracy: "",
+  //     departure: "",
+  //     arrivalName: "",
+  //   },
+  // ]);
 
-  /* 4시간 삽질해서 얻은 useEffect 먼저 동기화 입니다 */
+  const [timeGroup, setTimeGroup] = useState(1)
   useEffect(() => {
-    (async () => {
-      const ship = await axios.get("http://localhost:8080/log/1");
-      setShip(ship.data);
-    })();
-  }, []);
+    const interval = setInterval(()=>{
+      setTimeGroup(timeGroup + 1)}, 5000)
+    return () =>{
+      clearInterval(interval)
+    } });
+
+    
+
+  // /* 4시간 삽질해서 얻은 useEffect 먼저 동기화 입니다 */
+  // useEffect(() => {
+  //   (async () => {
+  //     const ship = await axios.get(`http://localhost:8080/log/${timeGroup}`);
+  //     setShip(ship.data);
+  //   })();
+  // }, []);
 
   return (
-    <div className="w-[100vw] ">
-      <Navbar ship={ship} />
+    <div>
+      <Navbar />
 
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/Info" element={<Info ship={ship} />} />
-        <Route path="/TotalMap" element={<TotalMap ship={ship} />} />
-        <Route path="/shipMap/:shipId" element={<ShipMap ship={ship} />} />
+        <Route path="/" element={<Home timeGroup={timeGroup}/>}/>
+        <Route path="/Info" element={<Info timeGroup={timeGroup}/>} />
+        <Route path="/TotalMap" element={<TotalMap timeGroup={timeGroup}/>} />
+        <Route path="/shipMap/:shipId" element={<ShipMap timeGroup={timeGroup}/>} />
+        <Route path="/Login" element={<Login/>} />
       </Routes>
     </div>
   );

@@ -12,7 +12,7 @@ import { useParams, useNavigate} from "react-router-dom";
 
 
   
-const ShipMap = ({timeGroup}) => {
+const ShipMap = ({ship}) => {
   // useParams 이용해서 param 값가져오기
 const {shipId} = useParams() 
 const navigate = useNavigate()
@@ -69,56 +69,54 @@ const getMarker =
   const [countPath, setCountPath] = useState(0)
   const [polyPath, setPolyPath] = useState([])
   const [changePath, setChangePath] = useState([]);
-  const [, setTimeGroup] = useState(2)
+  const [goDetail, setGoDetail] = useState()
+  const [timeGroup, setTimeGroup] = useState(1)
   const [changeTime, setChangeTime] = useState([])
   const [showInTime, setShowInTime] = useState([])
   
   const [arrive , setArrive] = useState({
-    lat: 37.440515,
-    lng: 126.601098,
+    lat: 37.35,
+    lng: 126.99,
   })
 
 
   useEffect(()=>{
-    const interval = setInterval(()=>{
-      (async () => {
-        const result = await axios.get(
-          `http://localhost:8080/locations/${timeGroup}/${shipId}`
-        );
-        setPath(result.data);
-        setTimeGroup(timeGroup + 1)
-          // console.log(path)
-       
-        // 인천항 도착이면 Info 페이지로 이동
-       if(changePath[changePath.length-1].lat === arrive.lat){
-          navigate('/info') 
-       }
-       for(let i in obs){
-        if(changePath[changePath.length-1].lat >= obs[i].obsLat){
-            setShipEffect(obs[i].obsName)
-            console.log(shipEffect)
-        }
-        // console.log(changePath[changePath.length-1].lat)
-        // console.log(obs[i].obsLat)
-      }
-      })()
-      .catch(()=>{
-        console.log("데이터못불러옴")
-      })
-    },3000)
-    return () =>{
-      clearInterval(interval)
-    } 
-  },[path])
-  for (let i in path) {
-    changePath.push({lat:path[i].shipLat, lng: path[i].shipLon})
-    changeTime.push(path[i].takeTime)
-    showInTime.push(path[i].insertTime)
+  const interval = setInterval(()=>{
+    (async () => {
+      const result = await axios.get(
+        `http://localhost:8080/locations/${timeGroup}/${shipId}`
+      );
+      setPath(result.data);
+      setTimeGroup(timeGroup + 1)
   
-  }
+     
+      // 인천항 도착이면 Info 페이지로 이동
+    //  if(changePath[changePath.length-1].lat >= arrive.lat){
+    //     navigate('/info') 
+    //  }
+     for(let i in obs){
+      if(changePath[changePath.length-1].lat >= obs[i].obsLat){
+          setShipEffect(obs[i].obsName)
+      }
+      console.log(changePath[changePath.length-1].lat)
+      console.log(obs[i].obsLat)
+    }
+    })()
+    .catch(()=>{
+      console.log("데이터못불러옴")
+    })
+  },3000)
+  return () =>{
+    clearInterval(interval)
+  } 
+},[path])
 
+for (let i in path) {
+  changePath.push({lat:path[i].shipLat, lng: path[i].shipLon})
+  changeTime.push(path[i].takeTime)
+  showInTime.push(path[i].insertTime)
 
-
+}
 
 
 
@@ -151,9 +149,10 @@ useEffect(()=>{
     zoomControl: true,
   };
   const options2 ={
-   
-    
-    
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#FF0000',
   }
   const circleOptions = {
     strokeColor: "#FF0000",
@@ -171,7 +170,7 @@ useEffect(()=>{
 
 
   // Marker 클릭, hover 변경 state
-  const [activeMarker, setActiveMarker] = useState();
+  const [activeMarker, setActiveMarker] = useState(null);
 
   const handleActiveMarker = (marker) => {
     if (marker === activeMarker) {
@@ -194,9 +193,9 @@ useEffect(()=>{
           >
             {/* (실시간 데이터) 입력시각 창 */}
             <div className="relative mt-20 ml-96 w-screen items-center justify-center  text-black z-10 bg-[#46BCEC]">
-               <p className="text-[20px]">입력시각 :{showInTime[showInTime.length-1]}</p>
-               <p className="text-[20px]">현재 컨테이너 선박은 {shipEffect}관측소의 정보로 예측중입니다</p>
-              
+               <p className="text-[20px]">입력시각 :{showInTime[showInTime.length-1]}
+               <p>현재 컨테이너 선박은 {shipEffect}관측소의 정보로 예측중입니다</p>
+               </p>
             </div>
             <MarkerF
               position={{ 
@@ -216,7 +215,6 @@ useEffect(()=>{
                 </InfoWindow>
               ) : null}
             </MarkerF>
-            
             {path.map(({shipId, shipName,
                           shipLat ,
                           shipLon ,
@@ -231,24 +229,24 @@ useEffect(()=>{
                           arrivalName})=>(
             <MarkerF
             key={takeTime}
-            position={{lat : changePath[changePath.length-1].lat , lng : changePath[changePath.length-1].lng}}
+            position={{lat : shipLat , lng : shipLon}}
             icon={{
               // url : require(`../img/${getMarker(shipUse)}.png`),
               url : require("../img/ship.png"),
               scaledSize : {width : 25, height:25}
             }}
-            onMouseOver={() => handleActiveMarker(shipLat)
-            } 
+            onClick={() => {handleActiveMarker(shipId)
+            }} 
             >
                {/* 마커랑 아이디값이 동일하면 infowindow UI 보여줌 */}
-              {activeMarker === shipLat ? (
+              {activeMarker === shipId? (
                 <InfoWindow onCloseClick={() => setActiveMarker(null)}>
                   <div className="font-bold p-2">
                     <p>선박명 : {shipName}</p>
-                    <p>위도 : {changePath[changePath.length-1].lat}</p>
-                    <p>경도 : {changePath[changePath.length-1].lng}</p>
-                    {/* <p className="text-red-500 font-bold">도착예정시간 : <span className="text-[20px]">{changeTime[changeTime.length-1]}분</span></p> */}
-                    <button className="font-bold border border-blue-300 rounded-full bg-blue-400 ml-8"
+                    <p>위도 : {path[path.length-1].shipLat}</p>
+                    <p>경도 : {path[path.length-1].shipLon}</p>
+                    <p className="text-red-500 font-bold">도착예정시간 : <span className="text-[20px]">{changeTime[changeTime.length-1]}분</span></p>
+                    <button className="font-bold border border-blue-300 rounded-full bg-blue-400 ml-11"
                     onClick={()=>{
                       setPolyPath(changePath)
                       setCountPath(!countPath)
@@ -288,7 +286,7 @@ useEffect(()=>{
         />:null}
         </MarkerF>
         ))}        
-        {polyPath && countPath ? <Polyline path={polyPath} /> : null}
+        {polyPath && countPath ? <Polyline path={polyPath} options={options2}/> : null}
           </GoogleMap>
         
         </div>

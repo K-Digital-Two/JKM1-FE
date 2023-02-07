@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from "react";
 import MapStyles from "../MapStyles";
 import axios from "axios";
-import Detail from "../component/Detail";
+
 import {
   GoogleMap,
   InfoWindowF,
@@ -11,23 +11,12 @@ import {
 } from "@react-google-maps/api";
 import {useNavigate } from "react-router-dom";
 
-const MiniMap = ({shipId, setSlideMap }) => {
+const MiniMap = ({shipId}) => {
 
   const [path, setPath] = useState([]);
   const [changePath, setChangePath] = useState([]);
   const [startPath, setStartPath] = useState([]);
   const navigate = useNavigate()
-
-  useEffect(() => {
-    (async () => {
-      const result = await axios.get(
-        `http://localhost:8080/locations/1/${shipId}`
-      );
-      setPath(result.data);
-    })();
-  }, [])
-
-
 
   for (let i in path) {
     changePath.push({ lat: path[i].shipLat, lng: path[i].shipLon }); // 변하는 위치
@@ -37,7 +26,7 @@ const MiniMap = ({shipId, setSlideMap }) => {
   // 지도 스타일
   const containerStyle = {
     width: "20vw",
-    height: "25vh",
+    height: "20vh",
   };
   // 처음 중심지 위치
   const [position, setPosition] = useState({
@@ -93,7 +82,8 @@ const MiniMap = ({shipId, setSlideMap }) => {
                 setActiveMarker(shipId);
               }}>
               </MarkerF>
-            <Polyline path={changePath} options={options} />
+           
+           
           </GoogleMap>
         </div>
       </LoadScript>
