@@ -29,7 +29,7 @@ function App() {
   const [timeGroup, setTimeGroup] = useState(1)
   useEffect(() => {
     const interval = setInterval(()=>{
-      setTimeGroup(timeGroup + 1)}, 5000)
+      setTimeGroup(timeGroup + 1)}, 2000)
     return () =>{
       clearInterval(interval)
     } });
@@ -47,12 +47,11 @@ function App() {
   return (
     <div>
       <Navbar />
-
       <Routes>
         <Route path="/" element={<Home timeGroup={timeGroup}/>}/>
         <Route path="/Info" element={<Info timeGroup={timeGroup}/>} />
         <Route path="/TotalMap" element={<TotalMap timeGroup={timeGroup}/>} />
-        <Route path="/shipMap/:shipId" element={<ShipMap timeGroup={timeGroup}/>} />
+        <Route path="/ShipMap/:shipId" element={<ShipMap timeGroup={timeGroup}/>} />
         <Route path="/Login" element={<Login/>} />
       </Routes>
     </div>
