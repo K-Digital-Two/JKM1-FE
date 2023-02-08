@@ -4,11 +4,12 @@ import bg from '../img/bg.png'
 import Carousel from '../component/Carousel'
 
 const Home = () => {
+  
   return (
     <div className='h-screen overflow-auto absolute'>
       <div className="z-10 bg-white h-[82px] sticky top-0"/>
       {/* 배너화면 */}
-      <img src={bg} className='absolute -z-20 w-screen'/>
+      <img src={bg} alt='background' className='absolute -z-20 w-screen'/>
       <div className="pt-20 pb-[89px] w-screen h-[80vh] text-[#06283D] text-xl">
         <div className='flex gap-40 justify-center'>
           <div>
