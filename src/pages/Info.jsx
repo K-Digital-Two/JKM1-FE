@@ -35,18 +35,18 @@ const Info = ({ timeGroup }) => {
   useEffect(()=>{
     const interval = setInterval(()=>{
       (async () => {
-        const ship = await axios.get(`http://localhost:8080/log/${timeGroup}`)
+        const ship = await axios.get(`http://10.125.121.170:8080/log/${timeGroup}`)
         setShip(ship.data)
       })()
       .catch(()=>{
         setSignal(console.log("데이터못불러옴"))
       })
-    })
+    },1000)
     return () =>{
       clearInterval(interval)
     } 
   }, [ship])
-  
+
   const [modalClick , setModalClick] = useState(0) 
   const [checkChange, setCheckChange] = useState(0) 
   const [modalVisibledId, setModalVisibledId ] = useState("")
@@ -93,8 +93,7 @@ const Info = ({ timeGroup }) => {
   }
 
   return (
-    <div className="h-screen bg-gray-100">
-
+    <div className="h-screen bg-gray-100 bg-ship-screen op">
       {/* 검색 콤보박스 */}
       <div className="h-[82px] flex justify-center p-5">
         <Combobox>
@@ -106,7 +105,7 @@ const Info = ({ timeGroup }) => {
               setCheckChange(e.target.value)
             }} />
           <ComboboxPopover>
-            <ComboboxList className="absolute z-20 bg-white bg-opacity-80">
+            <ComboboxList className="absolute bg-white bg-opacity-80">
               {changeShip.map(({shipName,shipId})=>{
                 const str = `${shipName}`
                 return <ComboboxOption 
@@ -119,7 +118,7 @@ const Info = ({ timeGroup }) => {
       </div>
 
       {/* 리스트 상단 */}
-      <div className="px-[15%] pt-6 bg-gray-100 ">
+      <div className="px-[15%] pt-6">
         <div className="flex justify-between pl-[3%] pr-[10%] items-center">
           <div className="text-5xl font-bold">List</div>
           
@@ -151,7 +150,7 @@ const Info = ({ timeGroup }) => {
         </div>
 
       {/* 리스트 목록 출력 부분 */}
-        <div className="mt-4 h-[60vh] min-w-[1200px] overflow-auto">
+        <div className="mt-4 h-[60vh] min-w-[1200px] overflow-auto z-50">
           <div className="shadow-lg bg-white border-collapse">
             <div className="grid grid-cols-7 border-b-2 border-[#06283D] text-left items-center sticky top-0 bg-white">
               <div className="px-8 py-4 w-52">선박명</div>
@@ -207,14 +206,14 @@ const Info = ({ timeGroup }) => {
                         className={`${status === 0 ? "animate-flash2" : "null"} w-[25px] h-[25px] ml-9`}/>
                     </div>
                     <div className="col-span-7 font-bold">
-                      <Modal 
+                      {ship ? <Modal 
                         shipId={shipId} shipLat={shipLat} shipLon={shipLon}
                         modalVisibledId={modalVisibledId} takeTime={takeTime}
                         shipName={shipName} speed={speed} accuracy={accuracy}
                         arrivalName={arrivalName} departure={departure}
                         modalClick={modalClick} ModalHandler={ModalHandler} setModalClick={setModalClick} 
                         shipUse={shipUse} arrivalTime={arrivalTime} departTime={departTime} 
-                        setSlideMap={setSlideMap}/>
+                        setSlideMap={setSlideMap}/> : null}
                     </div>
                   </div>
                 </>

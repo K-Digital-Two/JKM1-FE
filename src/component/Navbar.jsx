@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className='flex py-4 px-6 items-center absolute w-screen z-20 bg-white '>
         <img src={Logo} alt="로고"
           onClick={() => {navigate('/')}}
-          className="w-[50px] h-[50px] mx-2"/>
+          className="w-[50px] h-[50px] mx-2 animate-flash2"/>
         <p className='font-bold text-[30px] italic' onClick={() => {navigate('/')}}>
           ShipTraffic.live
         </p>

@@ -39,13 +39,13 @@ const TotalMap = ({timeGroup}) => {
   useEffect(()=>{
     const interval = setInterval(()=>{
       (async () => {
-        const result = await axios.get(`http://localhost:8080/locations/${timeGroup}`);
+        const result = await axios.get(`http://10.125.121.170:8080/locations/${timeGroup}`);
         setShip(result.data)
       })()
       .catch(()=>{
         setSignal(console.log("데이터못불러옴"))
       })
-    })
+    },1000)
     return () =>{
       clearInterval(interval)
     } 
@@ -54,7 +54,7 @@ const TotalMap = ({timeGroup}) => {
   // 관측소 데이터 불러오기
   useEffect(()=>{
     (async () => {
-      const result2 = await axios.get("http://localhost:8080/obs");
+      const result2 = await axios.get("http://10.125.121.170:8080/obs");
       setObs(result2.data);
     })()
   }, [])
@@ -72,8 +72,8 @@ const TotalMap = ({timeGroup}) => {
   // 처음 중심지 위치
   const [position, setPosition] = useState(
     {
-      lat: 37.49012631842129,
-      lng: 126.62878763527841,
+      lat: 37.31489164635451,
+      lng: 125.01447327312809 ,
     },
   )
   
@@ -129,7 +129,9 @@ const TotalMap = ({timeGroup}) => {
             options={options}
           >
             <MarkerF
-            position={position}
+            position={{
+              lat: 37.46513050623015,
+              lng: 126.61136800252747,}}
             icon={{
               url : require("../img/shipMarker.png"),
               scaledSize : {width : 40, height : 40},
@@ -162,8 +164,8 @@ const TotalMap = ({timeGroup}) => {
                 key={shipName}
                 position={{lat : parseFloat(shipLat) , lng : parseFloat(shipLon)}}
                 icon={{
-                  url :require("../img/ship.png"),
-                  scaledSize : {width : 25, height:25}
+                  url :require("../img/m10.png"),
+                  scaledSize : {width : 30, height:30}
                 }}
                 onClick={() => {handleActiveMarker(shipId)}}>
 
@@ -209,7 +211,7 @@ const TotalMap = ({timeGroup}) => {
               <MarkerF
                 key={obsId}
                 icon={{
-                  url : require("../img/m2.png"),
+                  url : require("../img/m3.png"),
                   scaledSize : {width : 50, height : 50}
                 }}
                 animation={2}

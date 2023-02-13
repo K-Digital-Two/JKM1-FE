@@ -31,13 +31,13 @@ const Detail = ({detailInfo, timeGroup}) => {
   useEffect(()=>{
     const interval = setInterval(()=>{
       (async () => {
-        const result = await axios.get(`http://localhost:8080/locations/${timeGroup}/${detailInfo[0].shipId}`)
+        const result = await axios.get(`http://10.125.121.170:8080/locations/${timeGroup}/${detailInfo[0].shipId}`)
         setShip(result.data)
       })()
       .catch(()=>{
         setSignal(console.log("데이터못불러옴"))
       })
-    })
+    },1000)
     return () =>{
       clearInterval(interval)
     } 

@@ -12,7 +12,8 @@ module.exports = {
         set : ['Noto Serif KR']
       },
       backgroundImage :{
-        'blue-screen' : "url('./img/back.png')"
+        'blue-screen' : "url('./img/back.png')",
+        'ship-screen' : "url('./img/back3.png')"
       },
       keyframes : {
         wiggle: {
@@ -85,9 +86,9 @@ module.exports = {
           },
         },
         flash: {
-          '25%, 40%': { opacity: '0' },
-          '50%': { opacity: '1' },
-          '75%': { opacity: '0' },
+          '20%, 40%': { opacity: '0' },
+          '60%': { opacity: '1' },
+          '80%': { opacity: '0' },
         },
         headShake: {
           '0%': {

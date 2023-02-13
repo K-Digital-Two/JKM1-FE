@@ -7,6 +7,7 @@ import ShipMap from "./pages/ShipMap";
 import TotalMap from "./pages/TotalMap";
 import Home from "./pages/Home";
 import Login from "./login/Login";
+import NotPage from "./pages/NotPage";
 
 function App() {
   // const [ship, setShip] = useState([
@@ -29,10 +30,12 @@ function App() {
   const [timeGroup, setTimeGroup] = useState(1)
   useEffect(() => {
     const interval = setInterval(()=>{
-      setTimeGroup(timeGroup + 1)}, 2000)
+      setTimeGroup(timeGroup + 1)
+    }, 1000)
     return () =>{
       clearInterval(interval)
-    } });
+    } 
+  });
 
     
 
@@ -48,10 +51,11 @@ function App() {
     <div>
       <Navbar />
       <Routes>
+        <Route path='*' element={<NotPage/>}/>
         <Route path="/" element={<Home timeGroup={timeGroup}/>}/>
         <Route path="/Info" element={<Info timeGroup={timeGroup}/>} />
         <Route path="/TotalMap" element={<TotalMap timeGroup={timeGroup}/>} />
-        <Route path="/ShipMap/:shipId" element={<ShipMap timeGroup={timeGroup}/>} />
+        <Route path="/ShipMap/:paramId" element={<ShipMap timeGroup={timeGroup}/>} />
         <Route path="/Login" element={<Login/>} />
       </Routes>
     </div>

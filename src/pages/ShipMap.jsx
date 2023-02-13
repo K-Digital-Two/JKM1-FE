@@ -13,7 +13,8 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const ShipMap = ({ timeGroup }) => {
   // useParams 이용해서 param 값가져오기
-  const { shipId } = useParams();
+  
+  const { paramId } = useParams();
   const navigate = useNavigate();
   const [obs, setObs] = useState([]);
   const [shipEffect, setShipEffect] = useState([]);
@@ -25,47 +26,52 @@ const ShipMap = ({ timeGroup }) => {
   const [showInTime, setShowInTime] = useState([]);
   const [signal, setSignal] = useState("");
   const [shipSpeed, setShipSpeed] = useState([]);
+  const [fristName, setFristName] = useState()
 
   const [arrive, setArrive] = useState({
     lat: 37.440515,
     lng: 126.601098,
   });
+  const [checkStatus, setCheckStatus] = useState()
 
   // timeGroup, shipId별 로그 데이터 불러오기
   useEffect(() => {
     const interval = setInterval(() => {
       (async () => {
         const result = await axios.get(
-          `http://localhost:8080/locations/${timeGroup}/${shipId}`
+          `http://10.125.121.170:8080/locations/${timeGroup}/${paramId}`
         )
         setPath(result.data)
-        setSignal(path[0].shipName)
-
-        // 도착시 list 페이지로 이동
-        if (changePath[changePath.length - 1].lat === arrive.lat) {
-          alert("도착하여\nList페이지로 이동합니다")
-          navigate("/info")
+        if(path === null || path[0] == null || path[0].shipName == null){
+         return 
         }
-      })().catch(() => {
-        setSignal(console.log("데이터못불러옴"))
-      })
-    })
+        setSignal(path[0].shipName)
+        // 도착시 list 페이지로 이동
+        if (path[path.length-1].status === 1) {
+          setTimeout(()=>{
+            alert("도착하여\nList페이지로 이동합니다")
+            navigate("/info")
+          },1000)
+          
+        }
+      })()
+    },1000)
     return () => {
       clearInterval(interval)
     }
   }, [path])
 
   for (let i in path) {
-    changePath.push({ lat: path[i].shipLat, lng: path[i].shipLon })
+    changePath.push({ lat: path[i].shipLat, lng: path[i].shipLon})
     changeTime.push(path[i].takeTime)
     showInTime.push(path[i].insertTime)
     shipSpeed.push(path[i].speed)
+    
   }
-
   // 관측소 데이터 불러오기
   useEffect(() => {
     (async () => {
-      const result2 = await axios.get("http://localhost:8080/obs")
+      const result2 = await axios.get("http://10.125.121.170:8080/obs")
       setObs(result2.data)
       console.log(result2.data)
     })().catch(() => {
@@ -81,8 +87,8 @@ const ShipMap = ({ timeGroup }) => {
 
   // 처음 중심지 위치
   const [position, setPosition] = useState({
-    lat: 37.49012631842129,
-    lng: 126.62878763527841,
+    lat: 37.31489164635451,
+    lng: 125.01447327312809 ,
   })
 
   // 지도 옵션
@@ -106,9 +112,22 @@ const ShipMap = ({ timeGroup }) => {
     radius: 30000,
     zIndex: 1,
   }
+  // PolyLine Option 경로
+  const pLineOptions ={
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 0.5,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35,
+    clickable: false,
+    draggable: false,
+    editable: false,
+    visible: true,
+    zIndex: 1,
+  }
 
   // Marker 클릭, hover 변경 state
-  const [activeMarker, setActiveMarker] = useState(null);
+  const [activeMarker, setActiveMarker] = useState();
 
   const handleActiveMarker = (marker) => {
     if (marker === activeMarker) {
@@ -116,7 +135,7 @@ const ShipMap = ({ timeGroup }) => {
     }
     setActiveMarker(marker);
   }
-
+  console.log(timeGroup)
   return (
     <div>
       <div className="z-10 bg-white h-[82px] w-screen absolute text-black" />
@@ -137,12 +156,11 @@ const ShipMap = ({ timeGroup }) => {
                   <p className="text-[16px] bg-white bg-opacity-20 p-1 rounded-md h-8">
                     신호 입력시각 :{showInTime[showInTime.length - 1]}
                   </p>
-
                   <pre className="text-[16px] bg-white p-1 rounded-md flex border-2 border-black">
-                    {" "}
+                  {" "}
                     현재{" "}
                     <p className="text-red-400">
-                      {signal ? path[0].shipName : "신호없음"}
+                      {signal}
                     </p>{" "}
                     선박은 평균{" "}
                     <p className="text-red-400">
@@ -191,7 +209,8 @@ const ShipMap = ({ timeGroup }) => {
             </MarkerF>
             
             {/* 선박 위치 마커 표시 */}
-            {path.map(({ shipName, shipLat, takeTime }) => (
+            {path.map(({ shipName, shipLat, takeTime, shipId }) => (
+              
               <MarkerF
                 key={takeTime}
                 position={{
@@ -200,11 +219,12 @@ const ShipMap = ({ timeGroup }) => {
                 }}
                 icon={{
                   // url : require(`../img/${getMarker(shipUse)}.png`),
-                  url: require("../img/ship.png"),
-                  scaledSize: { width: 25, height: 25 },
+                  url: require("../img/m10.png"),
+                  scaledSize: { width: 30, height: 30},
                 }}
-                onMouseOver={() => handleActiveMarker(shipLat)}
+                onLoad={() => handleActiveMarker(shipLat)}
               >
+                <Polyline path={changePath} options={pLineOptions} />
                 {/* 마커랑 아이디값이 동일하면 infowindow UI 보여줌 */}
                 {activeMarker === shipLat ? (
                   <InfoWindow onCloseClick={() => setActiveMarker(null)}>
@@ -215,14 +235,6 @@ const ShipMap = ({ timeGroup }) => {
                       <p className="text-red-500 font-bold">도착예정시간 : <span className="text-[20px]">
                         {changeTime[changeTime.length-1]}분</span>
                       </p>
-                      <button
-                        className="font-bold border border-blue-300 rounded-full bg-blue-400 ml-8"
-                        onClick={() => {
-                          setPolyPath(changePath);
-                          setCountPath(!countPath);
-                        }}>
-                        경로보기
-                      </button>
                     </div>
                   </InfoWindow>
                 ) : null}
@@ -234,8 +246,8 @@ const ShipMap = ({ timeGroup }) => {
               <MarkerF
                 key={obsId}
                 icon={{
-                  url: require("../img/m2.png"),
-                  scaledSize: { width: 25, height: 25 },
+                  url: require("../img/m3.png"),
+                  scaledSize: { width: 50, height: 50 },
                 }}
                 position={{ lat: parseFloat(obsLat), lng: parseFloat(obsLon) }}
                 onClick={() => {
