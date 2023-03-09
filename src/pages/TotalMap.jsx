@@ -2,7 +2,8 @@ import { React, useState, useEffect } from "react"
 import MapStyles from "../MapStyles"
 import axios from "axios"
 import Detail from "../component/Detail"
-
+import {BsCaretDownFill} from 'react-icons/bs'
+import ShipList from "../component/ShipList"
 import {
   Circle,
   GoogleMap,
@@ -28,7 +29,7 @@ const TotalMap = ({timeGroup}) => {
       arrivalName: "",
     },
   ])
-
+  const [open, setOpen] = useState()
   const [changePath, setChangePath] = useState([])
   const [activeMarker, setActiveMarker] = useState(null)
   const [shipClick, setShipClick] = useState()
@@ -115,12 +116,21 @@ const TotalMap = ({timeGroup}) => {
 
   return (
     <>
+   
       {/* 구글 맵 api 받아오기 */}
       <LoadScript googleMapsApiKey="AIzaSyDgd7TSRgGpk4aaQMdrYG9bJJiKnzdRGDY">
         <div className="z-10 bg-white h-[82px] w-screen absolute"/>
           <div className="z-0 absolute w-screen h-screen">
             <div className="text-black absolute pt-24 ml-32 z-20">
-              <div className="text-[16px] bg-white p-1 rounded-md">현재 선박 척수 : {ship.length}척</div>
+              <div className="text-[16px] bg-white p-1 rounded-md">
+              <BsCaretDownFill  className="float-left mt-1" onClick={()=>{setOpen(!open)}}/>
+                현재 선박 척수 : {ship.length}척
+              <div className={`${open? "w-72" : "w-6"} list h-560px bg-[#1E293B] relative`}>
+        {/* 선박 List */}
+          { open ? <ShipList ship={ship} handleActiveMarker={handleActiveMarker}/> : null}
+          </div>
+          {/* Listbar 줄이기 넓히기 */}
+         </div>
             </div>
           <GoogleMap
             mapContainerStyle={containerStyle} // 구글맵 사이즈
@@ -230,7 +240,7 @@ const TotalMap = ({timeGroup}) => {
           
                 {activeMarker === obsName ? 
                   <Circle
-                    center={{lat :  parseFloat(obsLat), lng : parseFloat(obsLon)}}
+                    center={{lat :parseFloat(obsLat), lng : parseFloat(obsLon)}}
                     radius = {30000}
                     options={circleOptions}/>:null}
               </MarkerF>

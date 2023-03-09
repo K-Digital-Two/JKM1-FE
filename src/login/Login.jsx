@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 
@@ -10,6 +11,10 @@ const Login = () => {
   const [savedPassword, setSavedPassword] = useState("")
 
   
+  const navigate = useNavigate()
+
+
+
   useEffect(()=>{
       axios.get(`http://localhost:8080/signin/${userId}`,{
         Id : userId,
@@ -31,13 +36,7 @@ const Login = () => {
 
       })
   },[]) 
-
-
-
-
-
   let sessionStorage = window.sessionStorage
-
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-gray-900 text-white mx-auto">
       <section className="flex flex-col space-y-9 w-[20rem]">
@@ -56,7 +55,7 @@ const Login = () => {
           className="w-full border-none bg-transparent outline-none placeholder:italic focus:outline-none" 
           onChange={(e)=>{setPassword(e.target.value)}}/>
         </div>
-        <button onClick={()=>{
+        <button onClick={()=>{navigate('*')
        
 
           // setSavedUserId(sessionStorage.getItem("id"))

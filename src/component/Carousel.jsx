@@ -44,7 +44,7 @@ const Carousel = () => {
             <p>를 알려줍니다.</p>
           </div>
           <p className='mt-2 mb-5 text-[18px]'>선박의 도착시각을 예측하여 효과적인 대응체계를 구축할 수 있도록 도와줍니다.</p>
-          <img src={carousel1} alt='Info' className='w-full h-full'/>
+          <img src={carousel3} alt='Info' className='w-full h-full'/>
         </SwiperSlide>
 
         <SwiperSlide className='text-center'>
@@ -55,7 +55,7 @@ const Carousel = () => {
             <p>를 알려줍니다.</p>
           </div>
           <p className='mt-2 mb-5 '>항구 주변 50마일 이내의 모든 선박들의 실시간 위치를 제공함으로서 항구 주변 상황을 한눈에 파악할 수 있습니다.</p>
-          <img src={carousel3} alt='TotalMap' className='w-full h-full'/>
+          <img src={carousel1} alt='TotalMap' className='w-full h-full'/>
         </SwiperSlide>
 
       </Swiper>

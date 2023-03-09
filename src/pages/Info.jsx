@@ -105,7 +105,7 @@ const Info = ({ timeGroup }) => {
               setCheckChange(e.target.value)
             }} />
           <ComboboxPopover>
-            <ComboboxList className="absolute bg-white bg-opacity-80">
+            <ComboboxList className="absolute bg-white bg-opacity-80 z-30">
               {changeShip.map(({shipName,shipId})=>{
                 const str = `${shipName}`
                 return <ComboboxOption 

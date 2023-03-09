@@ -3,7 +3,11 @@ import half from '../img/half.png'
 import bg from '../img/bg.png'
 import Carousel from '../component/Carousel'
 
+
+const Title =`st`
+
 const Home = () => {
+  
   
   return (
     <div className='h-screen overflow-auto absolute'>
