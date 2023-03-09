@@ -4,8 +4,6 @@ import bg from '../img/bg.png'
 import Carousel from '../component/Carousel'
 
 
-const Title =`st`
-
 const Home = () => {
   
   

@@ -56,10 +56,7 @@ const Login = () => {
           onChange={(e)=>{setPassword(e.target.value)}}/>
         </div>
         <button onClick={()=>{navigate('*')
-       
-
-          // setSavedUserId(sessionStorage.getItem("id"))
-          // setSavedPassword(sessionStorage.getItem("password"))
+      
         }}>
           로그인
         </button>

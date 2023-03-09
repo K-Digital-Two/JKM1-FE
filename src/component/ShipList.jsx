@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 
 const ShipList = ({ship , handleActiveMarker}) => {
 
-  const navigate = useNavigate()
   return (
 
 
@@ -13,7 +12,7 @@ const ShipList = ({ship , handleActiveMarker}) => {
         {ship.map(({shipId,shipName})=>(
           <div className='p-2 text-center text-white hover:text-black hover:text-[20px]' key={shipId}>
           <p className="hover:bg-white"
-               onClick={() => handleActiveMarker(shipId)}>{shipName}</p>
+              onClick={() => handleActiveMarker(shipId)}>{shipName}</p>
           </div>
         ))}
       </div>

@@ -17,7 +17,6 @@ const ShipMap = ({ timeGroup }) => {
   const { paramId } = useParams();
   const navigate = useNavigate();
   const [obs, setObs] = useState([]);
-  const [shipEffect, setShipEffect] = useState([]);
   const [path, setPath] = useState([]);
   const [countPath, setCountPath] = useState(0);
   const [polyPath, setPolyPath] = useState([]);
@@ -26,13 +25,7 @@ const ShipMap = ({ timeGroup }) => {
   const [showInTime, setShowInTime] = useState([]);
   const [signal, setSignal] = useState("");
   const [shipSpeed, setShipSpeed] = useState([]);
-  const [fristName, setFristName] = useState()
 
-  const [arrive, setArrive] = useState({
-    lat: 37.440515,
-    lng: 126.601098,
-  });
-  const [checkStatus, setCheckStatus] = useState()
 
   // timeGroup, shipId별 로그 데이터 불러오기
   useEffect(() => {

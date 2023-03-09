@@ -10,22 +10,6 @@ import Login from "./login/Login";
 import NotPage from "./pages/NotPage";
 
 function App() {
-  // const [ship, setShip] = useState([
-  //   {
-  //     shipId: "",
-  //     shipName: "",
-  //     shipLat: "",
-  //     shipLon: "",
-  //     takeTime: "",
-  //     shipUse: "",
-  //     speed: "",
-  //     departTime: "",
-  //     arrivalTime: "",
-  //     accuracy: "",
-  //     departure: "",
-  //     arrivalName: "",
-  //   },
-  // ]);
 
   const [timeGroup, setTimeGroup] = useState(1)
   useEffect(() => {
@@ -36,16 +20,6 @@ function App() {
       clearInterval(interval)
     } 
   });
-
-    
-
-  // /* 4시간 삽질해서 얻은 useEffect 먼저 동기화 입니다 */
-  // useEffect(() => {
-  //   (async () => {
-  //     const ship = await axios.get(`http://localhost:8080/log/${timeGroup}`);
-  //     setShip(ship.data);
-  //   })();
-  // }, []);
 
   return (
     <div>
